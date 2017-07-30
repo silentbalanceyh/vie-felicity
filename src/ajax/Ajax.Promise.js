@@ -59,7 +59,7 @@ class Promise {
             }catch(error){
                 console.error(error);
             }
-            return defer;
+            return defer.promise;
         };
         const request = this.request;
         this.promise = (method) => (uri, params = {}) => {

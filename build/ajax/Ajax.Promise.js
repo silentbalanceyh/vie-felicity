@@ -85,7 +85,7 @@ var Promise = function () {
             } catch (error) {
                 console.error(error);
             }
-            return defer;
+            return defer.promise;
         };
         var request = this.request;
         this.promise = function (method) {
