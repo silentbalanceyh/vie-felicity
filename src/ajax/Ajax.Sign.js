@@ -51,19 +51,20 @@ class Sign{
     constructor(prefix = ''){
         this.oauth = new OAuth(prefix);
         this.app = new App(prefix);
+        // Private
+        this.secret = (seed) => {
+            const user = this.oauth.user();
+            let secret = Date.now("YYYYMMDDHH");
+            if(user && 'object' === typeof user){
+                seed += user['uniqueId'];
+                secret = user['token'];
+            }
+            return { seed, secret };
+        }
     }
 
-    secret(seed){
-        const user = this.oauth.user();
-        let secret = Date.now("YYYYMMDDHH");
-        if(user && 'object' === typeof user){
-            seed += user['uniqueId'];
-            secret = user['token'];
-        }
-        return { seed, secret };
-    }
     /** Uri计算Sig **/
-    signature = (uri, method = "GET", params = {}) => {
+    signature(uri, method = "GET", params = {}){
         /** 1.构造签名的Method **/
         let seed = method.toUpperCase();
         seed += ":";

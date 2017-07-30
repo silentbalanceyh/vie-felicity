@@ -84,7 +84,23 @@ var Sign = function () {
 
         _classCallCheck(this, Sign);
 
-        this.signature = function (uri) {
+        this.oauth = new _Secure2.default(prefix);
+        this.app = new _Meta2.default(prefix);
+
+        this.secret = function (seed) {
+            var user = _this.oauth.user();
+            var secret = _Type2.default.now("YYYYMMDDHH");
+            if (user && 'object' === (typeof user === 'undefined' ? 'undefined' : _typeof(user))) {
+                seed += user['uniqueId'];
+                secret = user['token'];
+            }
+            return { seed: seed, secret: secret };
+        };
+    }
+
+    _createClass(Sign, [{
+        key: 'signature',
+        value: function signature(uri) {
             var method = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "GET";
             var params = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
@@ -94,7 +110,7 @@ var Sign = function () {
             seed += '' + uri;
             seed += "$";
 
-            var secretObj = _this.secret(seed);
+            var secretObj = this.secret(seed);
             seed = secretObj.seed;
             var secret = secretObj.secret;
 
@@ -104,22 +120,6 @@ var Sign = function () {
             });
 
             params['sig'] = sig;
-        };
-
-        this.oauth = new _Secure2.default(prefix);
-        this.app = new _Meta2.default(prefix);
-    }
-
-    _createClass(Sign, [{
-        key: 'secret',
-        value: function secret(seed) {
-            var user = this.oauth.user();
-            var secret = _Type2.default.now("YYYYMMDDHH");
-            if (user && 'object' === (typeof user === 'undefined' ? 'undefined' : _typeof(user))) {
-                seed += user['uniqueId'];
-                secret = user['token'];
-            }
-            return { seed: seed, secret: secret };
         }
     }, {
         key: 'token',

@@ -35,7 +35,25 @@ const format = (input = "", params) => {
     }
     return input;
 };
-
+const query = (params = {}, idx = 0) => {
+    let queryStr = '';
+    for(const key in params){
+        if(params.hasOwnProperty(key)){
+            const value = params[key];
+            if(value){
+                const kv = (key + '=' + encodeURIComponent(value));
+                if(0 === idx){
+                    queryStr += `?${kv}`;
+                }else{
+                    queryStr += `&${kv}`;
+                }
+                idx++;
+            }
+        }
+    }
+    return queryStr;
+};
 export default {
-    format
+    format,
+    query
 }

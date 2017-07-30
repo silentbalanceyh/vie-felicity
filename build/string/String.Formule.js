@@ -46,7 +46,28 @@ var format = function format() {
     }
     return input;
 };
+var query = function query() {
+    var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var idx = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
 
+    var queryStr = '';
+    for (var key in params) {
+        if (params.hasOwnProperty(key)) {
+            var value = params[key];
+            if (value) {
+                var kv = key + '=' + encodeURIComponent(value);
+                if (0 === idx) {
+                    queryStr += '?' + kv;
+                } else {
+                    queryStr += '&' + kv;
+                }
+                idx++;
+            }
+        }
+    }
+    return queryStr;
+};
 exports.default = {
-    format: format
+    format: format,
+    query: query
 };
