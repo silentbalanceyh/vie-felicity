@@ -6,7 +6,7 @@ import Formule from '../string/String.Formule';
 import Sign from './Ajax.Sign'
 import Log from '../log/Log'
 
-const _repdor = (defer, ret) => {
+const _repdor = (defer, ret = []) => {
     return (err, res) => {
         if(err){
             if(res && res.body){
@@ -75,7 +75,7 @@ class Promise {
         }
     }
 
-    flowGet(uri, params = {}, ret = {}){
+    flowGet(uri, params = {}, ret){
         let api = Formule.format(uri, params);
         // 签名
         this.sign.signature(api, "GET", params);

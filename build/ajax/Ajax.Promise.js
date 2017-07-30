@@ -122,9 +122,7 @@ var Promise = function () {
             api = api + query;
 
             api = '' + this.endpoint + api;
-            console.info(api);
-            console.info(this.endpoint);
-            return this.request(uri, params, "get", ret);
+            return this.request(api, params, "get", ret);
         }
     }, {
         key: 'get',

@@ -28,6 +28,7 @@ var _formatNamed = function _formatNamed() {
             if (0 <= input.indexOf(':' + key) && value) {
                 var replaced = new RegExp('\\:' + key, 'gm');
                 input = input.replace(replaced, value);
+                delete params[key];
             }
         }
     }
