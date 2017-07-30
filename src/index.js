@@ -1,5 +1,15 @@
 export { default as Loch } from './log/Log';
+
 export { default as RxJs } from './ajax/Ajax.RxJs';
 export { default as Promettre } from './ajax/Ajax.Promise';
+
 export { default as Formule} from './string/String.Formule';
+
 export { default as Perdu } from './tool/Tool.Random';
+export { Session as Seance } from './tool/Tool.Store';
+export { Storage as Espace } from './tool/Tool.Store';
+export { default as Crypter } from './tool/Tool.Encrypt';
+
+export { default as Cle } from './meta/Meta.Key';
+
+export { default as Ordre } from './type/Type.Array';
