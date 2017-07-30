@@ -1,9 +1,13 @@
 import Date from '../type/Type.Date'
 import Encrypt from '../tool/Tool.Encrypt'
 import Log from '../log/Log'
-import Schema from '../meta/Meta.Security.Schema.json'
 import OAuth from '../secure/Secure.OAuth'
 import App from "../meta/Meta.App";
+
+const SCHEMA = {
+    "OAuth":"Bearer",
+    "Basic":"Basic"
+};
 
 const _parameters = (params = {}) => {
     let param = '';
@@ -89,7 +93,7 @@ class Sign{
         let header = '';
         if(app){
             const auth = app.auth;
-            const prefix = Schema[auth];
+            const prefix = SCHEMA[auth];
             const user = this.oauth.user();
             if(user){
                 const value = Encrypt.b64Enc(`${user['uniqueId']}:${user['token']}`);

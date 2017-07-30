@@ -20,10 +20,6 @@ var _Log = require('../log/Log');
 
 var _Log2 = _interopRequireDefault(_Log);
 
-var _MetaSecuritySchema = require('../meta/Meta.Security.Schema.json');
-
-var _MetaSecuritySchema2 = _interopRequireDefault(_MetaSecuritySchema);
-
 var _Secure = require('../secure/Secure.OAuth');
 
 var _Secure2 = _interopRequireDefault(_Secure);
@@ -35,6 +31,11 @@ var _Meta2 = _interopRequireDefault(_Meta);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var SCHEMA = {
+    "OAuth": "Bearer",
+    "Basic": "Basic"
+};
 
 var _parameters = function _parameters() {
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -128,7 +129,7 @@ var Sign = function () {
             var header = '';
             if (app) {
                 var auth = app.auth;
-                var prefix = _MetaSecuritySchema2.default[auth];
+                var prefix = SCHEMA[auth];
                 var user = this.oauth.user();
                 if (user) {
                     var value = _Tool2.default.b64Enc(user['uniqueId'] + ':' + user['token']);

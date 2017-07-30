@@ -14,9 +14,9 @@ var _superagent = require('superagent');
 
 var _superagent2 = _interopRequireDefault(_superagent);
 
-var _MetaHeader = require('../meta/Meta.Header.json');
+var _Meta = require('../meta/Meta.Header');
 
-var _MetaHeader2 = _interopRequireDefault(_MetaHeader);
+var _Meta2 = _interopRequireDefault(_Meta);
 
 var _String = require('../string/String.Formule');
 
@@ -78,9 +78,9 @@ var Promise = function () {
             var defer = _q2.default.defer();
             try {
                 if (_this.secure) {
-                    _superagent2.default[method](uri).accept(DFT_MIME).set(_MetaHeader2.default['HTTP11']['CONTENT_TYPE'], DFT_MIME).set(_MetaHeader2.default['HTTP11']['AUTHORIZATION'], _this.sign.token()).send(params).end(_repdor(defer, ret));
+                    _superagent2.default[method](uri).accept(DFT_MIME).set(_Meta2.default['HTTP11']['CONTENT_TYPE'], DFT_MIME).set(_Meta2.default['HTTP11']['AUTHORIZATION'], _this.sign.token()).send(params).end(_repdor(defer, ret));
                 } else {
-                    _superagent2.default[method](uri).accept(DFT_MIME).set(_MetaHeader2.default['HTTP11']['CONTENT_TYPE'], DFT_MIME).send(params).end(_repdor(defer, ret));
+                    _superagent2.default[method](uri).accept(DFT_MIME).set(_Meta2.default['HTTP11']['CONTENT_TYPE'], DFT_MIME).send(params).end(_repdor(defer, ret));
                 }
             } catch (error) {
                 console.error(error);

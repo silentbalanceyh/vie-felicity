@@ -1,7 +1,7 @@
 import Q from 'q'
 import agent from 'superagent'
 
-import Header from '../meta/Meta.Header.json'
+import Header from '../meta/Meta.Header'
 import Formule from '../string/String.Formule';
 import Sign from './Ajax.Sign'
 
