@@ -34,7 +34,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var _repdor = function _repdor(defer, ret) {
+var _repdor = function _repdor(defer) {
+    var ret = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+
     return function (err, res) {
         if (err) {
             if (res && res.body) {
@@ -112,7 +114,7 @@ var Promise = function () {
         key: 'flowGet',
         value: function flowGet(uri) {
             var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-            var ret = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+            var ret = arguments[2];
 
             var api = _String2.default.format(uri, params);
 

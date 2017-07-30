@@ -6,7 +6,7 @@ import Formule from '../string/String.Formule';
 import Sign from './Ajax.Sign'
 import Log from '../log/Log'
 
-const _repdor = (defer, ret = []) => {
+const _repdor = (defer, ret) => {
     return (err, res) => {
         if(err){
             if(res && res.body){
