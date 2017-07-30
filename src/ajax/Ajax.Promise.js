@@ -6,60 +6,63 @@ import Formule from '../string/String.Formule';
 import Sign from './Ajax.Sign'
 import Log from '../log/Log'
 
-const _repdor = (defer, ret) => {
-    return (err, res) => {
-        if(err){
-            if(res && res.body){
-                defer.resolve(res.body.error);
-            }else{
-                defer.reject(err);
-            }
-        }else{
-            if(ret){
-                ret.push(res.body.data);
-                defer.resolve(ret);
-            }else{
-                defer.resolve(res.body.data);
-            }
-        }
-        Log.response(err, res);
-    }
-};
-
 const DFT_MIME = "application/json";
 
 class Promise {
 
-    constructor(endpoint, prefix = '', secure = true){
+    constructor({ endpoint = '', key = '', debug = true }, secure = true) {
         this.secure = secure;
-        const sign = new Sign(prefix);
+        const sign = new Sign(key, debug);
         this.sign = sign;
-        if(endpoint) {
+        if (endpoint) {
             this.endpoint = endpoint;
-        }else{
+        } else {
             console.info("[JOY] The promise switch to relative api path instead of endpoint.");
             this.endpoint = '';
         }
+        const repdor = (defer, ret) => {
+            return (err, res) => {
+                if (err) {
+                    if (res && res.body) {
+                        defer.resolve(res.body.error);
+                    } else {
+                        defer.reject(err);
+                    }
+                } else {
+                    if (ret) {
+                        ret.push(res.body.data);
+                        defer.resolve(ret);
+                    } else {
+                        defer.resolve(res.body.data);
+                    }
+                }
+                if(debug) {
+                    Log.response(err, res);
+                }
+            }
+        };
         // Private
         this.request = (uri, params = {}, method = 'get', ret) => {
-            Log.request(uri, method, params);
+            if(debug) {
+                Log.request(uri, method, params);
+            }
             const defer = Q.defer();
-            try{
-                if(this.secure){
+            try {
+                if (this.secure) {
                     agent[method](uri)
                         .accept(DFT_MIME)
-                        .set(Header['HTTP11']['CONTENT_TYPE'],DFT_MIME)
-                        .set(Header['HTTP11']['AUTHORIZATION'],this.sign.token())
+                        .set(Header['HTTP11']['CONTENT_TYPE'], DFT_MIME)
+                        .set(Header['HTTP11']['AUTHORIZATION'], this.sign.token())
                         .send(params)
-                        .end(_repdor(defer, ret))
-                }else{
+                        .end(repdor(defer, ret))
+                } else {
                     agent[method](uri)
                         .accept(DFT_MIME)
-                        .set(Header['HTTP11']['CONTENT_TYPE'],DFT_MIME)
+                        .set(Header['HTTP11']['CONTENT_TYPE'], DFT_MIME)
                         .send(params)
-                        .end(_repdor(defer, ret))
+                        .end(repdor(defer, ret))
                 }
-            }catch(error){
+            } catch (error) {
                 console.error(error);
             }
             return defer.promise;
@@ -75,33 +78,34 @@ class Promise {
         }
     }
 
-    flowGet(uri, params = {}, ret){
+    flowGet(uri, params = {}, ret) {
         let api = Formule.format(uri, params);
         // 签名
         this.sign.signature(api, "GET", params);
         // 追加Query
-        const query = Formule.query(params, (0 > uri.indexOf('?') ? 0: 1));
+        const query = Formule.query(params, (0 > uri.indexOf('?') ? 0 : 1));
         api = api + query;
         // 最终请求路径
         api = `${this.endpoint}${api}`;
         return this.request(api, params, "get", ret);
     }
 
-    get(uri, params = {}){
+    get(uri, params = {}) {
         return this.flowGet(uri, params);
     }
 
-    post(uri, params = {}){
+    post(uri, params = {}) {
         const request = this.promise('post');
         return request(uri, params);
     }
 
-    put(uri, params = {}){
+    put(uri, params = {}) {
         const request = this.promise('put');
         return request(uri, params);
     }
+
     // 静态方法处理
-    static _(store = {}){
+    static _(store = {}) {
         const defer = Q.defer();
         defer.resolve(store);
         return defer.promise;

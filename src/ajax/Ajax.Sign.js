@@ -52,9 +52,10 @@ const _parameters = (params = {}) => {
 
 class Sign{
 
-    constructor(prefix = ''){
+    constructor(prefix = '', debug = true){
         this.oauth = new OAuth(prefix);
         this.app = new App(prefix);
+        this.debug = debug;
         // Private
         this.secret = (seed) => {
             const user = this.oauth.user();
@@ -81,9 +82,11 @@ class Sign{
         const secret = secretObj.secret;
         /** 3.签名 **/
         const sig = Encrypt.hmSha512(seed, secret);
-        Log.sign(uri, method, params, {
-            sig, secret, seed
-        });
+        if(this.debug) {
+            Log.sign(uri, method, params, {
+                sig, secret, seed
+            });
+        }
         /** 4.注入 **/
         params['sig'] = sig
     };
