@@ -13,3 +13,11 @@ export { default as Crypter } from './tool/Tool.Encrypt';
 export { default as Cle } from './meta/Meta.Key';
 
 export { default as Ordre } from './type/Type.Array';
+export { default as Datte} from './type/Type.Date';
+
+export { default as Une } from './react/React.Prop';
+
+export { default as Dialogue } from './ant/Ant.Dialog';
+
+export { default as App } from './meta/Meta.App';
+export { default as OAuth } from './secure/Secure.OAuth';
