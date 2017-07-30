@@ -4,7 +4,7 @@ const _formatArray = (input = '', args = []) => {
         args.forEach((item, index) => {
             // 表达式开始带冒号:
             if(0 <= input.indexOf(':' + index) && item){
-                let replaced = new RegExp(`\\$${index}`,'gm');
+                let replaced = new RegExp(`\\:${index}`,'gm');
                 input = input.replace(replaced, item);
             }
         })
@@ -18,7 +18,7 @@ const _formatNamed = (input = '', params = {}) => {
         for(const key in params){
             const value = params[key];
             if(0 <= input.indexOf(':' + key) && value){
-                let replaced = new RegExp(`\\$${key}`,'gm');
+                let replaced = new RegExp(`\\:${key}`,'gm');
                 input = input.replace(replaced, value);
             }
         }

@@ -10,7 +10,7 @@ var _formatArray = function _formatArray() {
     if (Array.prototype.isPrototypeOf(args) && 0 < args.length) {
         args.forEach(function (item, index) {
             if (0 <= input.indexOf(':' + index) && item) {
-                var replaced = new RegExp('\\$' + index, 'gm');
+                var replaced = new RegExp('\\:' + index, 'gm');
                 input = input.replace(replaced, item);
             }
         });
@@ -26,7 +26,7 @@ var _formatNamed = function _formatNamed() {
         for (var key in params) {
             var value = params[key];
             if (0 <= input.indexOf(':' + key) && value) {
-                var replaced = new RegExp('\\$' + key, 'gm');
+                var replaced = new RegExp('\\:' + key, 'gm');
                 input = input.replace(replaced, value);
             }
         }
