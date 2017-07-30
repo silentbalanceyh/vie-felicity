@@ -84,7 +84,7 @@ class Promise {
         api = api + query;
         // 最终请求路径
         api = `${this.endpoint}${api}`;
-        return this.request(uri, params, "get", ret);
+        return this.request(api, params, "get", ret);
     }
 
     get(uri, params = {}){

@@ -20,6 +20,7 @@ const _formatNamed = (input = '', params = {}) => {
             if(0 <= input.indexOf(':' + key) && value){
                 let replaced = new RegExp(`\\:${key}`,'gm');
                 input = input.replace(replaced, value);
+                delete params[key];
             }
         }
     }
