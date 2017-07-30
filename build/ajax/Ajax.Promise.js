@@ -155,9 +155,4 @@ var Promise = function () {
     return Promise;
 }();
 
-exports.default = function (endpoint) {
-    var prefix = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
-    var secure = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-
-    return new Promise(endpoint, prefix, secure);
-};
+exports.default = Promise;
