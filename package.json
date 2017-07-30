@@ -1,6 +1,6 @@
 {
   "name": "vie-joy",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "description": "Joy库文件（For SCO & VIE）",
   "main": "build/index.js",
   "scripts": {
