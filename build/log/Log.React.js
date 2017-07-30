@@ -9,7 +9,7 @@ var _colorful = function _colorful() {
     var color = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     var stateless = arguments[3];
 
-    var message = "%c [Joy] [" + (stateless ? "React Component" : "Stateless Function Component") + "] Control monitor: name = " + Name;
+    var message = "%c [Joy] [" + (!stateless ? "React Component" : "Stateless Function Component") + "] Control monitor: name = " + Name;
     console.groupCollapsed(message, "color:" + color.group + ";font-weight:900");
     console.log("%c [Joy] Props -> ", "color:" + color.props + ";font-weight:900", reference.props);
     if (!stateless) console.log("%c [Joy] State -> ", "color:" + color.state + ";font-weight:900", reference.state);
