@@ -39,7 +39,9 @@
     "babel-runtime": "^6.25.0",
     "moment": "^2.18.1",
     "q": "^1.5.0",
+    "random-js": "^1.0.8",
     "rxjs": "^5.4.2",
-    "superagent": "^3.5.2"
+    "superagent": "^3.5.2",
+    "uuid": "^3.1.0"
   }
 }
