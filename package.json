@@ -3,6 +3,7 @@
   "version": "0.0.28",
   "description": "Joy库文件（For SCO & VIE）",
   "main": "build/index.js",
+  "types": "build/index.d.ts",
   "scripts": {
     "compile": "babel -d build/ src/ && cp src/index.d.ts build/index.d.ts",
     "prepare": "npm run compile",
