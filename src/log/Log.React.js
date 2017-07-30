@@ -1,5 +1,5 @@
 const _colorful = (reference = {}, Name, color = {}, stateless) => {
-    let message = `%c [Joy] [${stateless?"React Component":"Stateless Function Component"}] Control monitor: name = ${Name}`;
+    let message = `%c [Joy] [${!stateless?"React Component":"Stateless Function Component"}] Control monitor: name = ${Name}`;
     console.groupCollapsed(message, `color:${color.group};font-weight:900`);
     console.log(`%c [Joy] Props -> `, `color:${color.props};font-weight:900`, reference.props);
     if(!stateless) console.log(`%c [Joy] State -> `, `color:${color.state};font-weight:900`, reference.state);
