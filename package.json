@@ -1,10 +1,10 @@
 {
   "name": "vie-joy",
-  "version": "0.0.25",
+  "version": "0.0.26",
   "description": "Joy库文件（For SCO & VIE）",
   "main": "build/index.js",
   "scripts": {
-    "compile": "babel -d build/ src/",
+    "compile": "babel -d build/ src/ && cp src/index.d.ts build/index.d.ts",
     "prepare": "npm run compile",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
