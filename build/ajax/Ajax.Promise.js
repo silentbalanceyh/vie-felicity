@@ -34,39 +34,24 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var _repdor = function _repdor(defer, ret) {
-    return function (err, res) {
-        if (err) {
-            if (res && res.body) {
-                defer.resolve(res.body.error);
-            } else {
-                defer.reject(err);
-            }
-        } else {
-            if (ret) {
-                ret.push(res.body.data);
-                defer.resolve(ret);
-            } else {
-                defer.resolve(res.body.data);
-            }
-        }
-        _Log2.default.response(err, res);
-    };
-};
-
 var DFT_MIME = "application/json";
 
 var Promise = function () {
-    function Promise(endpoint) {
+    function Promise(_ref) {
         var _this = this;
 
-        var prefix = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
-        var secure = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+        var _ref$endpoint = _ref.endpoint,
+            endpoint = _ref$endpoint === undefined ? '' : _ref$endpoint,
+            _ref$key = _ref.key,
+            key = _ref$key === undefined ? '' : _ref$key,
+            _ref$debug = _ref.debug,
+            debug = _ref$debug === undefined ? true : _ref$debug;
+        var secure = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
         _classCallCheck(this, Promise);
 
         this.secure = secure;
-        var sign = new _Ajax2.default(prefix);
+        var sign = new _Ajax2.default(key, debug);
         this.sign = sign;
         if (endpoint) {
             this.endpoint = endpoint;
@@ -74,19 +59,42 @@ var Promise = function () {
             console.info("[JOY] The promise switch to relative api path instead of endpoint.");
             this.endpoint = '';
         }
+        var repdor = function repdor(defer, ret) {
+            return function (err, res) {
+                if (err) {
+                    if (res && res.body) {
+                        defer.resolve(res.body.error);
+                    } else {
+                        defer.reject(err);
+                    }
+                } else {
+                    if (ret) {
+                        ret.push(res.body.data);
+                        defer.resolve(ret);
+                    } else {
+                        defer.resolve(res.body.data);
+                    }
+                }
+                if (debug) {
+                    _Log2.default.response(err, res);
+                }
+            };
+        };
 
         this.request = function (uri) {
             var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
             var method = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'get';
             var ret = arguments[3];
 
-            _Log2.default.request(uri, method, params);
+            if (debug) {
+                _Log2.default.request(uri, method, params);
+            }
             var defer = _q2.default.defer();
             try {
                 if (_this.secure) {
-                    _superagent2.default[method](uri).accept(DFT_MIME).set(_Meta2.default['HTTP11']['CONTENT_TYPE'], DFT_MIME).set(_Meta2.default['HTTP11']['AUTHORIZATION'], _this.sign.token()).send(params).end(_repdor(defer, ret));
+                    _superagent2.default[method](uri).accept(DFT_MIME).set(_Meta2.default['HTTP11']['CONTENT_TYPE'], DFT_MIME).set(_Meta2.default['HTTP11']['AUTHORIZATION'], _this.sign.token()).send(params).end(repdor(defer, ret));
                 } else {
-                    _superagent2.default[method](uri).accept(DFT_MIME).set(_Meta2.default['HTTP11']['CONTENT_TYPE'], DFT_MIME).send(params).end(_repdor(defer, ret));
+                    _superagent2.default[method](uri).accept(DFT_MIME).set(_Meta2.default['HTTP11']['CONTENT_TYPE'], DFT_MIME).send(params).end(repdor(defer, ret));
                 }
             } catch (error) {
                 console.error(error);

@@ -82,11 +82,13 @@ var Sign = function () {
         var _this = this;
 
         var prefix = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+        var debug = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
         _classCallCheck(this, Sign);
 
         this.oauth = new _Secure2.default(prefix);
         this.app = new _Meta2.default(prefix);
+        this.debug = debug;
 
         this.secret = function (seed) {
             var user = _this.oauth.user();
@@ -116,9 +118,11 @@ var Sign = function () {
             var secret = secretObj.secret;
 
             var sig = _Tool2.default.hmSha512(seed, secret);
-            _Log2.default.sign(uri, method, params, {
-                sig: sig, secret: secret, seed: seed
-            });
+            if (this.debug) {
+                _Log2.default.sign(uri, method, params, {
+                    sig: sig, secret: secret, seed: seed
+                });
+            }
 
             params['sig'] = sig;
         }
