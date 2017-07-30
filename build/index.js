@@ -127,4 +127,13 @@ Object.defineProperty(exports, 'OAuth', {
   }
 });
 
+var _Ant = require('./form/Ant.Verifier');
+
+Object.defineProperty(exports, 'Verifier', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_Ant).default;
+  }
+});
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
