@@ -109,15 +109,6 @@ Object.defineProperty(exports, 'Une', {
   }
 });
 
-var _Ant = require('./ant/Ant.Dialog');
-
-Object.defineProperty(exports, 'Dialogue', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_Ant).default;
-  }
-});
-
 var _Meta2 = require('./meta/Meta.App');
 
 Object.defineProperty(exports, 'App', {

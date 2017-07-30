@@ -105,6 +105,6 @@ class Promise {
     }
 }
 
-export default (endpoint) => {
-    return new Promise(endpoint);
+export default (endpoint, prefix = '', secure = true) => {
+    return new Promise(endpoint, prefix, secure);
 }
