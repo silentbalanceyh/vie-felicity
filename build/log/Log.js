@@ -16,6 +16,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = {
     sign: _Log2.default.sign,
+    request: _Log2.default.request,
+    response: _Log2.default.response,
 
     control: _Log4.default.control,
     container: _Log4.default.container,

@@ -17,6 +17,24 @@ var sign = function sign(uri, method, parameters, _ref) {
     console.groupEnd();
 };
 
+var request = function request(uri, method, parameters) {
+    var message = '%c [Joy] [Ajax] Ajax request with method ' + method + '. ( uri = ' + uri + ')';
+    console.groupCollapsed(message, "color:#0066CC;font-weight:900");
+    console.log('%c [Joy] Parameters -> ', 'color:#9999CC;font-weight:900', parameters);
+    console.log('%c [Joy] Uri -> ', 'color:#669966;font-weight:900', uri);
+    console.groupEnd();
+};
+
+var response = function response(err, res) {
+    var message = '%c [Joy] [Ajax] Ajax response got with method.';
+    console.groupCollapsed(message, "color:#339933;font-weight:900");
+    console.log('%c [Joy] Resource -> ', 'color:#9999CC;font-weight:900', res);
+    console.log('%c [Joy] Error -> ', 'color:#669966;font-weight:900', err);
+    console.groupEnd();
+};
+
 exports.default = {
-    sign: sign
+    sign: sign,
+    request: request,
+    response: response
 };

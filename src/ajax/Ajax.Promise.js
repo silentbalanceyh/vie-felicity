@@ -4,6 +4,7 @@ import agent from 'superagent'
 import Header from '../meta/Meta.Header'
 import Formule from '../string/String.Formule';
 import Sign from './Ajax.Sign'
+import Log from '../log/Log'
 
 const _repdor = (defer, ret) => {
     return (err, res) => {
@@ -21,6 +22,7 @@ const _repdor = (defer, ret) => {
                 defer.resolve(res.body.data);
             }
         }
+        Log.response(err, res);
     }
 };
 
@@ -40,6 +42,7 @@ class Promise {
         }
         // Private
         this.request = (uri, params = {}, method = 'get', ret) => {
+            Log.request(uri, method, params);
             const defer = Q.defer();
             try{
                 if(this.secure){

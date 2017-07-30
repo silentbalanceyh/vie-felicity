@@ -26,6 +26,10 @@ var _Ajax = require('./Ajax.Sign');
 
 var _Ajax2 = _interopRequireDefault(_Ajax);
 
+var _Log = require('../log/Log');
+
+var _Log2 = _interopRequireDefault(_Log);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -46,6 +50,7 @@ var _repdor = function _repdor(defer, ret) {
                 defer.resolve(res.body.data);
             }
         }
+        _Log2.default.response(err, res);
     };
 };
 
@@ -75,6 +80,7 @@ var Promise = function () {
             var method = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'get';
             var ret = arguments[3];
 
+            _Log2.default.request(uri, method, params);
             var defer = _q2.default.defer();
             try {
                 if (_this.secure) {
