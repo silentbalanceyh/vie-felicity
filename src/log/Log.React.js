@@ -3,7 +3,7 @@ const _colorful = (reference = {}, Name, color = {}, stateless) => {
     console.groupCollapsed(message, `color:${color.group};font-weight:900`);
     console.log(`%c [Joy] Props -> `, `color:${color.props};font-weight:900`, reference.props);
     if(!stateless) console.log(`%c [Joy] State -> `, `color:${color.state};font-weight:900`, reference.state);
-    console.log(`%c [Joy] Hoc -> `, `color:${color.props};font-weight:900`, reference.hoc);
+    console.log(`%c [Joy] Hoc -> `, `color:${color.props};font-weight:900`, reference.hoc || reference.props['$hoc']);
     console.groupEnd()
 };
 
