@@ -53,7 +53,6 @@ const _parameters = (params = {}) => {
 class Sign{
 
     constructor(prefix = '', debug = true){
-        this.oauth = new OAuth(prefix);
         this.app = new App(prefix);
         this.debug = debug;
         // Private

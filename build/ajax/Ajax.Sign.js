@@ -86,7 +86,6 @@ var Sign = function () {
 
         _classCallCheck(this, Sign);
 
-        this.oauth = new _Secure2.default(prefix);
         this.app = new _Meta2.default(prefix);
         this.debug = debug;
 
