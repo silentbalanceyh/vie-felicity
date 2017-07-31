@@ -11,10 +11,6 @@ class OAuth{
         this.$secure = new Promise({endpoint, key, debug});
         this.$public = new Promise({endpoint, key, debug},false);
     }
-    // 读取登陆用户
-    user(){
-        return Session.get(this.key.session());
-    }
     // 交换Token并且存储Token
     token({client_id, code}, callback = {}, session = {}){
         if (client_id && code) {

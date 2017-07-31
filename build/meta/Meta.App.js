@@ -52,6 +52,11 @@ var App = function () {
                 _Tool.Storage.put(key, data);
             }
         }
+    }, {
+        key: 'user',
+        value: function user() {
+            return _Tool.Session.get(this.key.session());
+        }
     }]);
 
     return App;

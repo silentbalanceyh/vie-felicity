@@ -97,7 +97,7 @@ class Sign{
         if(app){
             const auth = app.auth;
             const prefix = SCHEMA[auth];
-            const user = this.oauth.user();
+            const user = this.app.user();
             if(user){
                 const value = Encrypt.b64Enc(`${user['uniqueId']}:${user['token']}`);
                 header = prefix + ' ' + value;

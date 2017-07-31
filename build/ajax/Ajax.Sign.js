@@ -134,7 +134,7 @@ var Sign = function () {
             if (app) {
                 var auth = app.auth;
                 var prefix = SCHEMA[auth];
-                var user = this.oauth.user();
+                var user = this.app.user();
                 if (user) {
                     var value = _Tool2.default.b64Enc(user['uniqueId'] + ':' + user['token']);
                     header = prefix + ' ' + value;

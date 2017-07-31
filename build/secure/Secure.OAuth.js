@@ -42,11 +42,6 @@ var OAuth = function () {
     }
 
     _createClass(OAuth, [{
-        key: 'user',
-        value: function user() {
-            return _Tool.Session.get(this.key.session());
-        }
-    }, {
         key: 'token',
         value: function token(_ref2) {
             var client_id = _ref2.client_id,

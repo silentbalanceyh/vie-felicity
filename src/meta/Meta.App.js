@@ -27,6 +27,10 @@ class App {
             Storage.put(key, data);
         }
     }
+    // 读取登陆用户
+    user(){
+        return Session.get(this.key.session());
+    }
 }
 
 export default App
