@@ -90,7 +90,7 @@ var Sign = function () {
         this.debug = debug;
 
         this.secret = function (seed) {
-            var user = _this.oauth.user();
+            var user = _this.app.user();
             var secret = _Type2.default.now("YYYYMMDDHH");
             if (user && 'object' === (typeof user === 'undefined' ? 'undefined' : _typeof(user))) {
                 seed += user['uniqueId'];

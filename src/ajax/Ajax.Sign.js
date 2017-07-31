@@ -57,7 +57,7 @@ class Sign{
         this.debug = debug;
         // Private
         this.secret = (seed) => {
-            const user = this.oauth.user();
+            const user = this.app.user();
             let secret = Date.now("YYYYMMDDHH");
             if(user && 'object' === typeof user){
                 seed += user['uniqueId'];
