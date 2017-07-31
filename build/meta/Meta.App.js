@@ -23,10 +23,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var App = function () {
     function App() {
         var prefix = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+        var name = arguments[1];
 
         _classCallCheck(this, App);
 
         this.key = new _Meta2.default(prefix);
+        this.name = name;
     }
 
     _createClass(App, [{

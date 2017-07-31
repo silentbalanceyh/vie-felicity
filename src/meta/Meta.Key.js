@@ -14,7 +14,7 @@ class Key{
     }
 
     app(){
-        return `${this.prefix}STORE/APP/$name`;
+        return `${this.prefix}STORE/APP/:name`;
     }
 
     run(){

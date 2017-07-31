@@ -1,7 +1,6 @@
 import Date from '../type/Type.Date'
 import Encrypt from '../tool/Tool.Encrypt'
 import Log from '../log/Log'
-import OAuth from '../secure/Secure.OAuth'
 import App from "../meta/Meta.App";
 
 const SCHEMA = {

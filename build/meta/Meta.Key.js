@@ -27,7 +27,7 @@ var Key = function () {
     }, {
         key: "app",
         value: function app() {
-            return this.prefix + "STORE/APP/$name";
+            return this.prefix + "STORE/APP/:name";
         }
     }, {
         key: "run",

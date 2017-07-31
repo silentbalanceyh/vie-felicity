@@ -48,6 +48,7 @@ class Promise {
             }
             const defer = Q.defer();
             try {
+                console.info(this.sign.token());
                 if (this.secure) {
                     agent[method](uri)
                         .accept(DFT_MIME)

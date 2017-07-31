@@ -3,8 +3,9 @@ import { Session, Storage } from "../tool/Tool.Store"
 import Formule from '../string/String.Formule'
 class App {
 
-    constructor(prefix = ''){
+    constructor(prefix = '', name){
         this.key = new Key(prefix);
+        this.name = name;
     }
 
     read(){
