@@ -21,12 +21,20 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var OAuth = function () {
-    function OAuth() {
-        var prefix = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+    function OAuth(_ref) {
+        var _ref$endpoint = _ref.endpoint,
+            endpoint = _ref$endpoint === undefined ? '' : _ref$endpoint,
+            _ref$key = _ref.key,
+            key = _ref$key === undefined ? '' : _ref$key,
+            _ref$debug = _ref.debug,
+            debug = _ref$debug === undefined ? true : _ref$debug;
 
         _classCallCheck(this, OAuth);
 
-        this.key = new _Meta2.default(prefix);
+        this.key = new _Meta2.default(key);
+
+        this.$secure = new Promise({ endpoint: endpoint, key: key, debug: debug });
+        this.$public = new Promise({ endpoint: endpoint, key: key, debug: debug }, false);
     }
 
     _createClass(OAuth, [{
@@ -36,9 +44,9 @@ var OAuth = function () {
         }
     }, {
         key: 'token',
-        value: function token(_ref) {
-            var client_id = _ref.client_id,
-                code = _ref.code;
+        value: function token(_ref2) {
+            var client_id = _ref2.client_id,
+                code = _ref2.code;
             var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
             var session = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
@@ -46,7 +54,7 @@ var OAuth = function () {
                 var params = { client_id: client_id, code: code, grant_type: 'authorization_code' };
 
                 var uri = '/api/oth/token';
-                var promise = Promise.post(uri, params, false);
+                var promise = this.$public.post(uri, params);
                 var key = this.key;
                 promise.then(function (data) {
                     if (data.code) delete data.code;
@@ -78,7 +86,7 @@ var OAuth = function () {
             params['response_type'] = 'code';
 
             var uri = '/api/oth/authorize';
-            var promise = Promise.post(uri, params, false);
+            var promise = this.$public.post(uri, params);
             var token = this.token;
             promise.then(function (data) {
                 token({
@@ -106,7 +114,7 @@ var OAuth = function () {
 
             params.password = _Tool3.default.md5(params.password);
 
-            var promise = Promise.post(entry, params, false);
+            var promise = this.$public.post(entry, params);
 
             var authorize = this.authorize;
             promise.then(function (data) {
@@ -136,7 +144,7 @@ var OAuth = function () {
             data['npassword'] = _Tool3.default.md5(params['npassword']);
 
             var uri = '/api/user/cipher';
-            var promise = Promise.put(uri, data);
+            var promise = this.$secure.put(uri, params);
 
             promise.then(function (data) {
                 if (callback.success) callback.success(data);

@@ -4,8 +4,11 @@ import Key from "../meta/Meta.Key";
 import Encrypt from '../tool/Tool.Encrypt'
 
 class OAuth{
-    constructor(prefix = ''){
-        this.key = new Key(prefix);
+    constructor({ endpoint = '', key = '', debug = true }){
+        this.key = new Key(key);
+        // 构造两个Promise用户处理不同模式的安全访问
+        this.$secure = new Promise({endpoint, key, debug});
+        this.$public = new Promise({endpoint, key, debug},false);
     }
     // 读取登陆用户
     user(){
@@ -17,7 +20,7 @@ class OAuth{
             const params = {client_id, code, grant_type: 'authorization_code'};
             // 构造Promise
             const uri = '/api/oth/token';
-            const promise = Promise.post(uri, params, false);
+            const promise = this.$public.post(uri, params);
             const key = this.key;
             promise.then(data => {
                 // 防止用户信息被盗取，删除相关信息
@@ -46,7 +49,7 @@ class OAuth{
         params['response_type'] = 'code';
         // 提交该请求，生成响应数据
         const uri = '/api/oth/authorize';
-        const promise = Promise.post(uri, params, false);
+        const promise = this.$public.post(uri, params);
         const token = this.token;
         promise.then(data => {
             token({
@@ -65,7 +68,7 @@ class OAuth{
         // 加密密码
         params.password = Encrypt.md5(params.password);
         // 直接访问，不需要secure模式
-        const promise = Promise.post(entry, params, false);
+        const promise = this.$public.post(entry, params);
         // 调用远程接口登陆
         const authorize = this.authorize;
         promise.then(data => {
@@ -87,7 +90,7 @@ class OAuth{
         data['npassword'] = Encrypt.md5(params['npassword']);
         // 使用secure模式访问，固定访问地址和参数
         const uri = '/api/user/cipher';
-        const promise = Promise.put(uri, data);
+        const promise = this.$secure.put(uri, params);
         // 调用远程接口
         promise.then(data => {
             if(callback.success) callback.success(data);
