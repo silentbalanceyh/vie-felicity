@@ -2,6 +2,7 @@
 import { Session } from '../tool/Tool.Store';
 import Key from "../meta/Meta.Key";
 import Encrypt from '../tool/Tool.Encrypt'
+import Promise from '../ajax/Ajax.Promise';
 
 class OAuth{
     constructor({ endpoint = '', key = '', debug = true }){

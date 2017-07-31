@@ -16,6 +16,10 @@ var _Tool2 = require('../tool/Tool.Encrypt');
 
 var _Tool3 = _interopRequireDefault(_Tool2);
 
+var _Ajax = require('../ajax/Ajax.Promise');
+
+var _Ajax2 = _interopRequireDefault(_Ajax);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -33,8 +37,8 @@ var OAuth = function () {
 
         this.key = new _Meta2.default(key);
 
-        this.$secure = new Promise({ endpoint: endpoint, key: key, debug: debug });
-        this.$public = new Promise({ endpoint: endpoint, key: key, debug: debug }, false);
+        this.$secure = new _Ajax2.default({ endpoint: endpoint, key: key, debug: debug });
+        this.$public = new _Ajax2.default({ endpoint: endpoint, key: key, debug: debug }, false);
     }
 
     _createClass(OAuth, [{
