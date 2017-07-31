@@ -12,6 +12,10 @@ var _Meta = require('../meta/Meta.Key');
 
 var _Meta2 = _interopRequireDefault(_Meta);
 
+var _Meta3 = require('../meta/Meta.App');
+
+var _Meta4 = _interopRequireDefault(_Meta3);
+
 var _Tool2 = require('../tool/Tool.Encrypt');
 
 var _Tool3 = _interopRequireDefault(_Tool2);
@@ -36,6 +40,7 @@ var OAuth = function () {
         _classCallCheck(this, OAuth);
 
         this.key = new _Meta2.default(key);
+        this.app = new _Meta4.default(key);
 
         this.$secure = new _Ajax2.default({ endpoint: endpoint, key: key, debug: debug });
         this.$public = new _Ajax2.default({ endpoint: endpoint, key: key, debug: debug }, false);
@@ -86,9 +91,10 @@ var OAuth = function () {
 
             var uri = '/api/oth/authorize';
             var promise = this.$public.post(uri, params);
-            var token = this.token;
+            var reference = this;
             promise.then(function (data) {
-                token({
+                reference.token.bind(reference);
+                reference.token({
                     client_id: client_id,
                     code: data.code
                 }, callback, session);
@@ -115,10 +121,11 @@ var OAuth = function () {
 
             var promise = this.$public.post(entry, params);
 
-            var authorize = this.authorize;
+            var reference = this;
             promise.then(function (data) {
                 Object.assign(session, data);
-                authorize(data, callback, session);
+                reference.authorize.bind(reference);
+                reference.authorize(data, callback, session);
             }).fail(function (error) {
                 if (callback) callback.failure(error);
             });
@@ -158,7 +165,7 @@ var OAuth = function () {
             var uri = arguments[1];
             var fnCallback = arguments[2];
 
-            var session = this.user();
+            var session = this.app.user();
             if (!session) {
                 var _props$$router = props.$router,
                     $router = _props$$router === undefined ? { to: function to() {} } : _props$$router;
@@ -176,7 +183,7 @@ var OAuth = function () {
             var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
             var uri = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
 
-            var session = this.user();
+            var session = this.app.user();
             if (session) {
                 _Tool.Session.remove(this.key.session());
                 var $router = props.$router,

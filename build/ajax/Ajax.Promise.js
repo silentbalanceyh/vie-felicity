@@ -63,7 +63,7 @@ var Promise = function () {
             return function (err, res) {
                 if (err) {
                     if (res && res.body) {
-                        defer.resolve(res.body.error);
+                        defer.reject(res.body.error);
                     } else {
                         defer.reject(err);
                     }

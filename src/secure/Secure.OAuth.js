@@ -1,12 +1,14 @@
 
 import { Session } from '../tool/Tool.Store';
 import Key from "../meta/Meta.Key";
+import App from '../meta/Meta.App';
 import Encrypt from '../tool/Tool.Encrypt'
 import Promise from '../ajax/Ajax.Promise';
 
 class OAuth{
     constructor({ endpoint = '', key = '', debug = true }){
         this.key = new Key(key);
+        this.app = new App(key);
         // 构造两个Promise用户处理不同模式的安全访问
         this.$secure = new Promise({endpoint, key, debug});
         this.$public = new Promise({endpoint, key, debug},false);
@@ -47,15 +49,16 @@ class OAuth{
         // 提交该请求，生成响应数据
         const uri = '/api/oth/authorize';
         const promise = this.$public.post(uri, params);
-        const token = this.token;
+        const reference = this;
         promise.then(data => {
-            token({
+            reference.token.bind(reference);
+            reference.token({
                 client_id,
                 code: data.code
             }, callback, session)
         }).fail(error => {
             if (callback) callback.failure(error)
-        })
+        });
     };
     // 登陆
     login(entry = '', params = {}, callback = {
@@ -67,10 +70,11 @@ class OAuth{
         // 直接访问，不需要secure模式
         const promise = this.$public.post(entry, params);
         // 调用远程接口登陆
-        const authorize = this.authorize;
+        const reference = this;
         promise.then(data => {
             Object.assign(session, data);
-            authorize(data, callback, session);
+            reference.authorize.bind(reference);
+            reference.authorize(data, callback, session);
         }).fail(error => {
             if (callback) callback.failure(error)
         });
@@ -98,7 +102,7 @@ class OAuth{
     // 登陆控制
     forbidden(props = {}, uri, fnCallback){
         // 登陆检查，不存在的时候登出系统
-        const session = this.user();
+        const session = this.app.user();
         if(!session){
             const { $router = { to:() => {}} } = props;
             $router.to(uri);
@@ -110,7 +114,7 @@ class OAuth{
     };
     // 注销用户，存在时执行
     logout(props = {}, uri = ''){
-        const session = this.user();
+        const session = this.app.user();
         if(session){
             Session.remove(this.key.session());
             const { $router, $app } = props;
