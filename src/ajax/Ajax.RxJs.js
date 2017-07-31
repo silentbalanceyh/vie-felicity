@@ -13,7 +13,6 @@ const $ = (type, $action, fnPromise, fnCallback) => {
             return Observable.from(promise).map(fnCallback)
         });
 };
-
 export default {
     $
 }

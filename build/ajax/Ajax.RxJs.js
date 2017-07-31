@@ -21,7 +21,6 @@ var $ = function $(type, $action, fnPromise, fnCallback) {
         return _rxjs.Observable.from(promise).map(fnCallback);
     });
 };
-
 exports.default = {
     $: $
 };

@@ -1,6 +1,7 @@
 export { default as Loch } from './log/Log';
 
 export { default as RxJs } from './ajax/Ajax.RxJs';
+export { default as Flux } from './ajax/Ajax.Flow';
 export { default as Promettre } from './ajax/Ajax.Promise';
 
 export { default as Formule} from './string/String.Formule';

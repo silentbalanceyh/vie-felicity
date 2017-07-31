@@ -22,12 +22,21 @@ Object.defineProperty(exports, 'RxJs', {
   }
 });
 
-var _Ajax2 = require('./ajax/Ajax.Promise');
+var _Ajax2 = require('./ajax/Ajax.Flow');
+
+Object.defineProperty(exports, 'Flux', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_Ajax2).default;
+  }
+});
+
+var _Ajax3 = require('./ajax/Ajax.Promise');
 
 Object.defineProperty(exports, 'Promettre', {
   enumerable: true,
   get: function get() {
-    return _interopRequireDefault(_Ajax2).default;
+    return _interopRequireDefault(_Ajax3).default;
   }
 });
 
