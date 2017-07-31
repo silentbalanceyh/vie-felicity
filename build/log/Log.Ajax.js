@@ -18,10 +18,13 @@ var sign = function sign(uri, method, parameters, _ref) {
 };
 
 var request = function request(uri, method, parameters) {
+    var token = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '';
+
     var message = '%c [Joy] [Ajax] Ajax request with method ' + method + '. ( uri = ' + uri + ')';
     console.groupCollapsed(message, "color:#0066CC;font-weight:900");
     console.log('%c [Joy] Parameters -> ', 'color:#9999CC;font-weight:900', parameters);
     console.log('%c [Joy] Uri -> ', 'color:#669966;font-weight:900', uri);
+    console.log('%c [Joy] Uri -> ', 'color:#red;font-weight:900', token);
     console.groupEnd();
 };
 

@@ -44,11 +44,10 @@ class Promise {
         // Private
         this.request = (uri, params = {}, method = 'get', ret) => {
             if(debug) {
-                Log.request(uri, method, params);
+                Log.request(uri, method, params, this.sign.token());
             }
             const defer = Q.defer();
             try {
-                console.info(this.sign.token());
                 if (this.secure) {
                     agent[method](uri)
                         .accept(DFT_MIME)

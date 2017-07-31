@@ -87,11 +87,10 @@ var Promise = function () {
             var ret = arguments[3];
 
             if (debug) {
-                _Log2.default.request(uri, method, params);
+                _Log2.default.request(uri, method, params, _this.sign.token());
             }
             var defer = _q2.default.defer();
             try {
-                console.info(_this.sign.token());
                 if (_this.secure) {
                     _superagent2.default[method](uri).accept(DFT_MIME).set(_Meta2.default['HTTP11']['CONTENT_TYPE'], DFT_MIME).set(_Meta2.default['HTTP11']['AUTHORIZATION'], _this.sign.token()).send(params).end(repdor(defer, ret));
                 } else {

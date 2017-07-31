@@ -10,11 +10,12 @@ const sign = (uri, method, parameters, {
     console.groupEnd();
 };
 
-const request = (uri, method, parameters) => {
+const request = (uri, method, parameters, token = '') => {
     let message = `%c [Joy] [Ajax] Ajax request with method ${method}. ( uri = ${uri})`;
     console.groupCollapsed(message, "color:#0066CC;font-weight:900");
     console.log(`%c [Joy] Parameters -> `, 'color:#9999CC;font-weight:900', parameters);
     console.log(`%c [Joy] Uri -> `, 'color:#669966;font-weight:900', uri);
+    console.log(`%c [Joy] Uri -> `, 'color:#red;font-weight:900', token);
     console.groupEnd();
 };
 

@@ -20,10 +20,6 @@ var _Log = require('../log/Log');
 
 var _Log2 = _interopRequireDefault(_Log);
 
-var _Secure = require('../secure/Secure.OAuth');
-
-var _Secure2 = _interopRequireDefault(_Secure);
-
 var _Meta = require('../meta/Meta.App');
 
 var _Meta2 = _interopRequireDefault(_Meta);
