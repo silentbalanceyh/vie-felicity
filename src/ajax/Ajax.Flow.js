@@ -39,9 +39,9 @@ class Flow {
             const config = next[0];
             const nextPromise = promise.then(data => {
                 reference.push(data);
-                const {uri, params = {}, secure = true} = config;
+                const {uri, params = {}} = config;
                 const target = this.replace(params, reference);
-                return this.promise.flowGet(uri, target, reference, secure);
+                return this.promise.flowGet(uri, target, reference);
             });
             // 链式操作递归
             if (1 === next.length) {
@@ -61,13 +61,14 @@ class Flow {
             return promise.then(data => {
                 reference["-1"] = data;
                 const fnReplace = this.replace;
+                const promiseReference = this.promise;
                 // Promise的构建函数
                 const parallelPromise = (multi = [], replaced = []) => {
                     const result = [];
                     multi.forEach(config => {
                         const { uri, params = {}, secure = true} = config;
                         const target = fnReplace(params, replaced);
-                        const promise = Promise.get(uri, target, secure);
+                        const promise = promiseReference.get(uri, target);
                         result.push(promise);
                     });
                     return Q.all(result);
