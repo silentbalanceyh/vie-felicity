@@ -22,3 +22,5 @@ export { default as App } from './meta/Meta.App';
 export { default as OAuth } from './secure/Secure.OAuth';
 
 export { default as Verifier } from './form/Ant.Verifier'
+
+export { default as Voie } from './web/Web.Path';
