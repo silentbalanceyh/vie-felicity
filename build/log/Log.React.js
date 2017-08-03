@@ -43,7 +43,10 @@ var stateless = function stateless() {
     var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var Name = arguments[1];
 
-    _colorful({ props: props, state: null }, Name, {
+    _colorful({
+        props: props,
+        state: null
+    }, Name, {
         group: '#99CC33',
         props: "#333366",
         state: "#666666"
@@ -56,6 +59,17 @@ var container = function container() {
 
     _colorful(reference, Name, {
         group: '#006666',
+        props: '#333366',
+        state: '#666666'
+    });
+};
+
+var reuse = function reuse() {
+    var reference = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var Name = arguments[1];
+
+    _colorful(reference, Name, {
+        group: '#009900',
         props: '#333366',
         state: '#666666'
     });
@@ -89,5 +103,6 @@ exports.default = {
     components: components,
     form: form,
     stateless: stateless,
-    hoc: hoc
+    hoc: hoc,
+    reuse: reuse
 };

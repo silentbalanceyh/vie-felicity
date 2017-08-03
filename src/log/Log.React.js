@@ -1,8 +1,11 @@
 const _colorful = (reference = {}, Name, color = {}, stateless) => {
-    let message = `%c [Joy] [${(!stateless)?"React Component":"Stateless Function Component"}] Control monitor: name = ${Name}`;
+    let message = `%c [Joy] [${ (!stateless)
+        ? "React Component"
+        : "Stateless Function Component"}] Control monitor: name = ${Name}`;
     console.groupCollapsed(message, `color:${color.group};font-weight:900`);
     console.log(`%c [Joy] Props -> `, `color:${color.props};font-weight:900`, reference.props);
-    if(!stateless) console.log(`%c [Joy] State -> `, `color:${color.state};font-weight:900`, reference.state);
+    if (!stateless) 
+        console.log(`%c [Joy] State -> `, `color:${color.state};font-weight:900`, reference.state);
     console.log(`%c [Joy] Hoc -> `, `color:${color.props};font-weight:900`, reference.hoc || reference.props['$hoc']);
     console.groupEnd()
 };
@@ -24,16 +27,27 @@ const hoc = (reference = {}, Name) => {
 };
 
 const stateless = (props = {}, Name) => {
-    _colorful({props,state:null}, Name, {
+    _colorful({
+        props,
+        state: null
+    }, Name, {
         group: '#99CC33',
         props: "#333366",
         state: "#666666"
-    },true)
+    }, true)
 };
 
 const container = (reference = {}, Name) => {
     _colorful(reference, Name, {
         group: '#006666',
+        props: '#333366',
+        state: '#666666'
+    });
+};
+
+const reuse = (reference = {}, Name) => {
+    _colorful(reference, Name, {
+        group: '#009900',
         props: '#333366',
         state: '#666666'
     });
@@ -61,5 +75,6 @@ export default {
     components,
     form,
     stateless,
-    hoc
+    hoc,
+    reuse
 }
