@@ -18,7 +18,9 @@ var _click = function _click(id) {
 exports.default = {
     $: {
         click: function click(id) {
-            _click(id);
+            return function () {
+                _click(id);
+            };
         }
     }
 };

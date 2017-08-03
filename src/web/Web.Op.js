@@ -12,7 +12,7 @@ const click = (id) => {
 };
 export default {
     $ : {
-        click: (id) => {
+        click: (id) => () => {
             click(id);
         }
     }
