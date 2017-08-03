@@ -154,4 +154,13 @@ Object.defineProperty(exports, 'Voie', {
   }
 });
 
+var _Web2 = require('./web/Web.Op');
+
+Object.defineProperty(exports, 'Op', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_Web2).default;
+  }
+});
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
