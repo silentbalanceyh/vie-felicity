@@ -24,5 +24,6 @@ exports.default = {
     components: _Log4.default.components,
     form: _Log4.default.form,
     stateless: _Log4.default.stateless,
-    hoc: _Log4.default.hoc
+    hoc: _Log4.default.hoc,
+    reuse: _Log4.default.reuse
 };
