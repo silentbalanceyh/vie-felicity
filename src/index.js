@@ -54,4 +54,4 @@ from './web/Web.Path';
 export {default as Op}
 from './web/Web.Op';
 export {default as Dominer}
-from './Web/Web.Control';
+from './web/Web.Control';

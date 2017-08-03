@@ -163,7 +163,7 @@ Object.defineProperty(exports, 'Op', {
   }
 });
 
-var _Web3 = require('./Web/Web.Control');
+var _Web3 = require('./web/Web.Control');
 
 Object.defineProperty(exports, 'Dominer', {
   enumerable: true,
