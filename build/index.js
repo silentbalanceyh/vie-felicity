@@ -163,4 +163,13 @@ Object.defineProperty(exports, 'Op', {
   }
 });
 
+var _Web3 = require('./Web/Web.Control');
+
+Object.defineProperty(exports, 'Dominer', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_Web3).default;
+  }
+});
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
