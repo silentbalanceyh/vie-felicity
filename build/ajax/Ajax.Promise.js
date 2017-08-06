@@ -68,7 +68,7 @@ var Promise = function () {
                         defer.reject(err);
                     }
                 } else {
-                    if (ret) {
+                    if (ret && Array.prototype.isPrototypeOf(ret)) {
                         ret.push(res.body.data);
                         defer.resolve(ret);
                     } else {

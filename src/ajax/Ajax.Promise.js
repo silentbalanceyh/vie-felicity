@@ -10,7 +10,11 @@ const DFT_MIME = "application/json";
 
 class Promise {
 
-    constructor({ endpoint = '', key = '', debug = true }, secure = true) {
+    constructor({
+        endpoint = '',
+        key = '',
+        debug = true
+    }, secure = true) {
         this.secure = secure;
         const sign = new Sign(key, debug);
         this.sign = sign;
@@ -29,21 +33,21 @@ class Promise {
                         defer.reject(err);
                     }
                 } else {
-                    if (ret) {
+                    if (ret && Array.prototype.isPrototypeOf(ret)) {
                         ret.push(res.body.data);
                         defer.resolve(ret);
                     } else {
                         defer.resolve(res.body.data);
                     }
                 }
-                if(debug) {
+                if (debug) {
                     Log.response(err, res);
                 }
             }
         };
         // Private
         this.request = (uri, params = {}, method = 'get', ret) => {
-            if(debug) {
+            if (debug) {
                 Log.request(uri, method, params, this.sign.token());
             }
             const defer = Q.defer();
@@ -81,9 +85,13 @@ class Promise {
     flowGet(uri, params = {}, ret) {
         let api = Formule.format(uri, params);
         // 签名
-        this.sign.signature(api, "GET", params);
+        this
+            .sign
+            .signature(api, "GET", params);
         // 追加Query
-        const query = Formule.query(params, (0 > uri.indexOf('?') ? 0 : 1));
+        const query = Formule.query(params, (0 > uri.indexOf('?')
+            ? 0
+            : 1));
         api = api + query;
         // 最终请求路径
         api = `${this.endpoint}${api}`;
