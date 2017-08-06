@@ -16,21 +16,22 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var toolbar = function toolbar() {
     var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    var _props$left = props.left,
-        left = _props$left === undefined ? [] : _props$left,
-        _props$right = props.right,
-        right = _props$right === undefined ? [] : _props$right;
 
+    if (!props.left || !props.right) {
+        console.warn("[JOY] Please check your input configuration of toolbar.");
+    }
+    var left = _immutable2.default.fromJS(props.left).toJS();
     left.forEach(function (item) {
         if (item.connect) {
-            var $item = _immutable2.default.fromJS(item).toJS();
-            item.connect = _Web2.default.$.click($item.connect);
+            var id = item.connect;
+            item.connect = _Web2.default.$.click(id);
         }
     });
+    var right = _immutable2.default.fromJS(props.right).toJS();
     right.forEach(function (item) {
         if (item.connect) {
-            var $item = _immutable2.default.fromJS(item).toJS();
-            item.connect = _Web2.default.$.click($item.connect);
+            var id = item.connect;
+            item.connect = _Web2.default.$.click(id);
         }
     });
     return { left: left, right: right };
