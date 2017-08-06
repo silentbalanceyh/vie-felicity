@@ -1,6 +1,6 @@
 const move = (props = {}, step = 0, target = {}) => {
     const {fnFlush, $step} = props;
-    if (fnFlush) {
+    if (fnFlush && $step) {
         const {
             current = 0
         } = $step.to();
@@ -10,6 +10,14 @@ const move = (props = {}, step = 0, target = {}) => {
     }
 };
 
+const start = (props = {}, target = {}) => {
+    const {fnFlush, $step} = props;
+    if (fnFlush && $step) {
+        fnFlush(target);
+    }
+};
+
 export default {
-    move
+    move,
+    start
 }
