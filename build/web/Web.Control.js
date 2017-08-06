@@ -38,5 +38,6 @@ var toolbar = function toolbar() {
 };
 
 exports.default = {
-    "control.bar.ToolBar": toolbar
+    "control.bar.ToolBar": toolbar,
+    "control.bar.TabBar": toolbar
 };

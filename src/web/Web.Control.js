@@ -31,5 +31,6 @@ const toolbar = (props = {}) => {
 };
 
 export default {
-    "control.bar.ToolBar" : toolbar
+    "control.bar.ToolBar" : toolbar,
+    "control.bar.TabBar" : toolbar
 }
