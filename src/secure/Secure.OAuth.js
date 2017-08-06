@@ -147,8 +147,12 @@ class OAuth {
             const {
                 $router = {
                     to : () => {}
-                }
+                },
+                $app
             } = props;
+            if ($app.is()) {
+                uri = `/${$app._('path')}${uri}`;
+            }
             $router.to(uri);
         } else {
             if (fnCallback) {

@@ -178,8 +178,12 @@ var OAuth = function () {
                 var _props$$router = props.$router,
                     $router = _props$$router === undefined ? {
                     to: function to() {}
-                } : _props$$router;
+                } : _props$$router,
+                    $app = props.$app;
 
+                if ($app.is()) {
+                    uri = '/' + $app._('path') + uri;
+                }
                 $router.to(uri);
             } else {
                 if (fnCallback) {
