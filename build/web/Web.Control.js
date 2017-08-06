@@ -1,12 +1,16 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _Web = require("./Web.Op");
+var _Web = require('./Web.Op');
 
 var _Web2 = _interopRequireDefault(_Web);
+
+var _immutable = require('immutable');
+
+var _immutable2 = _interopRequireDefault(_immutable);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -19,14 +23,14 @@ var toolbar = function toolbar() {
 
     left.forEach(function (item) {
         if (item.connect) {
-            var id = item.connect;
-            item.connect = _Web2.default.$.click(id);
+            var $item = _immutable2.default.fromJS(item).toJS();
+            item.connect = _Web2.default.$.click($item.connect);
         }
     });
     right.forEach(function (item) {
         if (item.connect) {
-            var id = item.connect;
-            item.connect = _Web2.default.$.click(id);
+            var $item = _immutable2.default.fromJS(item).toJS();
+            item.connect = _Web2.default.$.click($item.connect);
         }
     });
     return { left: left, right: right };

@@ -1,5 +1,5 @@
 import Op from './Web.Op';
-
+import Immutable from 'immutable';
 const toolbar = (props = {}) => {
     const {
         left = [],
@@ -8,18 +8,22 @@ const toolbar = (props = {}) => {
     // 读取toolbar的连接点
     left.forEach(item => {
         if (item.connect) {
-            const id = item.connect;
+            const $item = Immutable
+                .fromJS(item)
+                .toJS();
             item.connect = Op
                 .$
-                .click(id);
+                .click($item.connect);
         }
     });
     right.forEach(item => {
         if (item.connect) {
-            const id = item.connect;
+            const $item = Immutable
+                .fromJS(item)
+                .toJS();
             item.connect = Op
                 .$
-                .click(id);
+                .click($item.connect);
         }
     });
     return {left, right}
