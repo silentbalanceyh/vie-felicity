@@ -19,12 +19,14 @@ var toolbar = function toolbar() {
 
     left.forEach(function (item) {
         if (item.connect) {
-            item.connect = _Web2.default.$.click(item.connect);
+            var id = item.connect;
+            item.connect = _Web2.default.$.click(id);
         }
     });
     right.forEach(function (item) {
         if (item.connect) {
-            item.connect = _Web2.default.$.click(item.connect);
+            var id = item.connect;
+            item.connect = _Web2.default.$.click(id);
         }
     });
     return { left: left, right: right };

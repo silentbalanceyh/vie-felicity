@@ -8,16 +8,18 @@ const toolbar = (props = {}) => {
     // 读取toolbar的连接点
     left.forEach(item => {
         if (item.connect) {
+            const id = item.connect;
             item.connect = Op
                 .$
-                .click(item.connect);
+                .click(id);
         }
     });
     right.forEach(item => {
         if (item.connect) {
+            const id = item.connect;
             item.connect = Op
                 .$
-                .click(item.connect);
+                .click(id);
         }
     });
     return {left, right}
