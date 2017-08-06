@@ -43,7 +43,11 @@ var OAuth = function () {
         this.app = new _Meta4.default(key);
 
         this.$secure = new _Ajax2.default({ endpoint: endpoint, key: key, debug: debug });
-        this.$public = new _Ajax2.default({ endpoint: endpoint, key: key, debug: debug }, false);
+        this.$public = new _Ajax2.default({
+            endpoint: endpoint,
+            key: key,
+            debug: debug
+        }, false);
     }
 
     _createClass(OAuth, [{
@@ -55,7 +59,11 @@ var OAuth = function () {
             var session = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
             if (client_id && code) {
-                var params = { client_id: client_id, code: code, grant_type: 'authorization_code' };
+                var params = {
+                    client_id: client_id,
+                    code: code,
+                    grant_type: 'authorization_code'
+                };
 
                 var uri = '/api/oth/token';
                 var promise = this.$public.post(uri, params);
@@ -145,12 +153,12 @@ var OAuth = function () {
             var session = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
             var data = {};
-            data['id'] = params['uniqueId'];
-            data['opassword'] = _Tool3.default.md5(params['opassword']);
-            data['npassword'] = _Tool3.default.md5(params['npassword']);
+            data['id'] = params.uniqueId;
+            data['opassword'] = _Tool3.default.md5(params.opassword);
+            data['npassword'] = _Tool3.default.md5(params.npassword);
 
             var uri = '/api/user/cipher';
-            var promise = this.$secure.put(uri, params);
+            var promise = this.$secure.put(uri, data);
 
             promise.then(function (data) {
                 if (callback.success) callback.success(data);
@@ -168,7 +176,9 @@ var OAuth = function () {
             var session = this.app.user();
             if (!session) {
                 var _props$$router = props.$router,
-                    $router = _props$$router === undefined ? { to: function to() {} } : _props$$router;
+                    $router = _props$$router === undefined ? {
+                    to: function to() {}
+                } : _props$$router;
 
                 $router.to(uri);
             } else {
