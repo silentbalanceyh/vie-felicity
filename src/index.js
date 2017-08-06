@@ -55,3 +55,5 @@ export {default as Op}
 from './web/Web.Op';
 export {default as Dominer}
 from './web/Web.Control';
+export {default as Aider}
+from './web/Web.Help';

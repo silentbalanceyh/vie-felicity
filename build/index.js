@@ -172,4 +172,13 @@ Object.defineProperty(exports, 'Dominer', {
   }
 });
 
+var _Web4 = require('./web/Web.Help');
+
+Object.defineProperty(exports, 'Aider', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_Web4).default;
+  }
+});
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
