@@ -50,6 +50,7 @@ class Promise {
             if (debug) {
                 Log.request(uri, method, params, this.sign.token());
             }
+            console.info(this.secure);
             const defer = Q.defer();
             try {
                 console.info(this.sign.token());

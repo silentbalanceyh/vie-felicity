@@ -89,6 +89,7 @@ var Promise = function () {
             if (debug) {
                 _Log2.default.request(uri, method, params, _this.sign.token());
             }
+            console.info(_this.secure);
             var defer = _q2.default.defer();
             try {
                 console.info(_this.sign.token());
