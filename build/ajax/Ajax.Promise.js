@@ -89,11 +89,9 @@ var Promise = function () {
             if (debug) {
                 _Log2.default.request(uri, method, params, _this.sign.token());
             }
-            console.info(_this.secure);
             var defer = _q2.default.defer();
             try {
-                console.info(_this.sign.token());
-                if (_this.secure) {
+                if (secure) {
                     _superagent2.default[method](uri).accept(DFT_MIME).set(_Meta2.default['HTTP11']['CONTENT_TYPE'], DFT_MIME).set(_Meta2.default['HTTP11']['AUTHORIZATION'], _this.sign.token()).send(params).end(repdor(defer, ret));
                 } else {
                     _superagent2.default[method](uri).accept(DFT_MIME).set(_Meta2.default['HTTP11']['CONTENT_TYPE'], DFT_MIME).send(params).end(repdor(defer, ret));
@@ -103,7 +101,7 @@ var Promise = function () {
             }
             return defer.promise;
         };
-        var request = this.request;
+        var fnRequest = this.request;
         this.promise = function (method) {
             return function (uri) {
                 var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -113,7 +111,7 @@ var Promise = function () {
                 sign.signature(uri, method.toUpperCase(), params);
 
                 api = '' + endpoint + api;
-                return request(api, params, method.toLowerCase(), secure);
+                return fnRequest(api, params, method.toLowerCase());
             };
         };
     }

@@ -50,11 +50,9 @@ class Promise {
             if (debug) {
                 Log.request(uri, method, params, this.sign.token());
             }
-            console.info(this.secure);
             const defer = Q.defer();
             try {
-                console.info(this.sign.token());
-                if (this.secure) {
+                if (secure) {
                     agent[method](uri)
                         .accept(DFT_MIME)
                         .set(Header['HTTP11']['CONTENT_TYPE'], DFT_MIME)
@@ -73,14 +71,14 @@ class Promise {
             }
             return defer.promise;
         };
-        const request = this.request;
+        const fnRequest = this.request;
         this.promise = (method) => (uri, params = {}) => {
             let api = Formule.format(uri, params);
             // 签名
             sign.signature(uri, method.toUpperCase(), params);
             // 最终请求路径
             api = `${endpoint}${api}`;
-            return request(api, params, method.toLowerCase(), secure);
+            return fnRequest(api, params, method.toLowerCase());
         }
     }
 
