@@ -91,6 +91,7 @@ var Promise = function () {
             }
             var defer = _q2.default.defer();
             try {
+                console.info(_this.secure);
                 if (_this.secure) {
                     _superagent2.default[method](uri).accept(DFT_MIME).set(_Meta2.default['HTTP11']['CONTENT_TYPE'], DFT_MIME).set(_Meta2.default['HTTP11']['AUTHORIZATION'], _this.sign.token()).send(params).end(repdor(defer, ret));
                 } else {
