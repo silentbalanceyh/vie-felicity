@@ -68,7 +68,20 @@ var query = function query() {
     }
     return queryStr;
 };
+var message = function message() {
+    var input = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+    var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+
+    if (params && Array.prototype.isPrototypeOf(params) && 0 < params.length) {
+        params.forEach(function (item, index) {
+            var reg = new RegExp('\\{' + index + '\\}', "gm");
+            input = input.replace(reg, item);
+        });
+    }
+    return input;
+};
 exports.default = {
     format: format,
+    message: message,
     query: query
 };
