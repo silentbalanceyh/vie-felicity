@@ -61,8 +61,45 @@ const message = (input = "", params = []) => {
     }
     return input;
 };
+const currency = (num) => {
+    // Negative
+    let oldNum = num;
+    num = Math.abs(num);
+
+    let result = '',
+        counter = 0;
+    let decimal = num
+        .toString()
+        .split('.')[1];
+    if (!decimal) {
+        decimal = "00";
+    } else {
+        decimal = decimal.substring(0, 2);
+        // Two Digit
+        if (2 > decimal.toString().length) {
+            decimal = decimal + "0";
+        }
+    }
+    let int = num
+        .toString()
+        .split('.')[0];
+    int = (int || 0).toString();
+    for (let i = int.length - 1; i >= 0; i--) {
+        counter++;
+        result = int.charAt(i) + result;
+        if (!(counter % 3) && i !== 0) {
+            result = ',' + result;
+        }
+    }
+    if (0 > oldNum) {
+        return "-" + result + '.' + decimal;
+    } else {
+        return result + '.' + decimal;
+    }
+}
 export default {
     format,
     message,
-    query
+    query,
+    currency
 }

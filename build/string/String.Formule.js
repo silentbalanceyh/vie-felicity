@@ -80,8 +80,40 @@ var message = function message() {
     }
     return input;
 };
+var currency = function currency(num) {
+    var oldNum = num;
+    num = Math.abs(num);
+
+    var result = '',
+        counter = 0;
+    var decimal = num.toString().split('.')[1];
+    if (!decimal) {
+        decimal = "00";
+    } else {
+        decimal = decimal.substring(0, 2);
+
+        if (2 > decimal.toString().length) {
+            decimal = decimal + "0";
+        }
+    }
+    var int = num.toString().split('.')[0];
+    int = (int || 0).toString();
+    for (var i = int.length - 1; i >= 0; i--) {
+        counter++;
+        result = int.charAt(i) + result;
+        if (!(counter % 3) && i !== 0) {
+            result = ',' + result;
+        }
+    }
+    if (0 > oldNum) {
+        return "-" + result + '.' + decimal;
+    } else {
+        return result + '.' + decimal;
+    }
+};
 exports.default = {
     format: format,
     message: message,
-    query: query
+    query: query,
+    currency: currency
 };
