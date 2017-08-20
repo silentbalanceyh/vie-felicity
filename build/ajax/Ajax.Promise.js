@@ -114,6 +114,19 @@ var Promise = function () {
                 return fnRequest(api, params, method.toLowerCase());
             };
         };
+        this.buildUri = function (uri, params) {
+            var method = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "GET";
+
+            var api = _String2.default.format(uri, params);
+
+            _this.sign.signature(api, method, params);
+
+            var query = _String2.default.query(params, 0 > uri.indexOf('?') ? 0 : 1);
+            api = api + query;
+
+            api = '' + _this.endpoint + api;
+            return api;
+        };
     }
 
     _createClass(Promise, [{
@@ -122,15 +135,16 @@ var Promise = function () {
             var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
             var ret = arguments[2];
 
-            var api = _String2.default.format(uri, params);
-
-            this.sign.signature(api, "GET", params);
-
-            var query = _String2.default.query(params, 0 > uri.indexOf('?') ? 0 : 1);
-            api = api + query;
-
-            api = '' + this.endpoint + api;
+            var api = this.buildUri(uri, params, "GET");
             return this.request(api, params, "get", ret);
+        }
+    }, {
+        key: 'delete',
+        value: function _delete(uri) {
+            var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+            var api = this.buildUri(uri, params, "DELETE");
+            return this.request(api, params, "delete");
         }
     }, {
         key: 'get',

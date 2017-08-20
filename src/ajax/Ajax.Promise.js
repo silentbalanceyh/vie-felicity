@@ -79,23 +79,32 @@ class Promise {
             // 最终请求路径
             api = `${endpoint}${api}`;
             return fnRequest(api, params, method.toLowerCase());
+        };
+        this.buildUri = (uri, params, method = "GET") => {
+            let api = Formule.format(uri, params);
+            // 签名
+            this
+                .sign
+                .signature(api, method, params);
+            // 追加Query
+            const query = Formule.query(params, (0 > uri.indexOf('?')
+                ? 0
+                : 1));
+            api = api + query;
+            // 最终请求路径
+            api = `${this.endpoint}${api}`;
+            return api;
         }
     }
 
     flowGet(uri, params = {}, ret) {
-        let api = Formule.format(uri, params);
-        // 签名
-        this
-            .sign
-            .signature(api, "GET", params);
-        // 追加Query
-        const query = Formule.query(params, (0 > uri.indexOf('?')
-            ? 0
-            : 1));
-        api = api + query;
-        // 最终请求路径
-        api = `${this.endpoint}${api}`;
+        const api = this.buildUri(uri, params, "GET");
         return this.request(api, params, "get", ret);
+    }
+
+    delete(uri, params = {}) {
+        const api = this.buildUri(uri, params, "DELETE");
+        return this.request(api, params, "delete");
     }
 
     get(uri, params = {}) {
