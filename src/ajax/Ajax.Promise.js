@@ -75,7 +75,7 @@ class Promise {
         this.promise = (method) => (uri, params = {}) => {
             let api = Formule.format(uri, params);
             // 签名
-            sign.signature(uri, method.toUpperCase(), params);
+            sign.signature(api, method.toUpperCase(), params);
             // 最终请求路径
             api = `${endpoint}${api}`;
             return fnRequest(api, params, method.toLowerCase());

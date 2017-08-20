@@ -108,7 +108,7 @@ var Promise = function () {
 
                 var api = _String2.default.format(uri, params);
 
-                sign.signature(uri, method.toUpperCase(), params);
+                sign.signature(api, method.toUpperCase(), params);
 
                 api = '' + endpoint + api;
                 return fnRequest(api, params, method.toLowerCase());
