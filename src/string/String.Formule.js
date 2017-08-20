@@ -1,22 +1,25 @@
-const _formatArray = (input = '', args = []) => {
+const _formatArray = (input = "", args = []) => {
     if (Array.prototype.isPrototypeOf(args) && 0 < args.length) {
         args.forEach((item, index) => {
             // 表达式开始带冒号:
-            if (0 <= input.indexOf(':' + index) && undefined != item) {
-                let replaced = new RegExp(`\\:${index}`, 'gm');
+            if (0 <= input.indexOf(":" + index) && undefined != item) {
+                let replaced = new RegExp(`\\:${index}`, "gm");
                 input = input.replace(replaced, item);
             }
-        })
+        });
     }
     return input;
 };
 
-const _formatNamed = (input = '', params = {}) => {
-    if (!Array.prototype.isPrototypeOf(params) && 0 < Object.keys(params).length) {
+const _formatNamed = (input = "", params = {}) => {
+    if (
+        !Array.prototype.isPrototypeOf(params) &&
+        0 < Object.keys(params).length
+    ) {
         for (const key in params) {
             const value = params[key];
-            if (0 <= input.indexOf(':' + key) && undefined != value) {
-                let replaced = new RegExp(`\\:${key}`, 'gm');
+            if (0 <= input.indexOf(":" + key) && undefined != value) {
+                let replaced = new RegExp(`\\:${key}`, "gm");
                 input = input.replace(replaced, value);
                 delete params[key];
             }
@@ -35,12 +38,12 @@ const format = (input = "", params) => {
     return input;
 };
 const query = (params = {}, idx = 0) => {
-    let queryStr = '';
+    let queryStr = "";
     for (const key in params) {
         if (params.hasOwnProperty(key)) {
             const value = params[key];
             if (value) {
-                const kv = (key + '=' + encodeURIComponent(value));
+                const kv = key + "=" + encodeURIComponent(value);
                 if (0 === idx) {
                     queryStr += `?${kv}`;
                 } else {
@@ -57,20 +60,18 @@ const message = (input = "", params = []) => {
         params.forEach((item, index) => {
             const reg = new RegExp(`\\{${index}\\}`, "gm");
             input = input.replace(reg, item);
-        })
+        });
     }
     return input;
 };
-const currency = (num) => {
+const currency = num => {
     // Negative
     let oldNum = num;
     num = Math.abs(num);
 
-    let result = '',
+    let result = "",
         counter = 0;
-    let decimal = num
-        .toString()
-        .split('.')[1];
+    let decimal = num.toString().split(".")[1];
     if (!decimal) {
         decimal = "00";
     } else {
@@ -80,26 +81,24 @@ const currency = (num) => {
             decimal = decimal + "0";
         }
     }
-    let int = num
-        .toString()
-        .split('.')[0];
+    let int = num.toString().split(".")[0];
     int = (int || 0).toString();
     for (let i = int.length - 1; i >= 0; i--) {
         counter++;
         result = int.charAt(i) + result;
         if (!(counter % 3) && i !== 0) {
-            result = ',' + result;
+            result = "," + result;
         }
     }
     if (0 > oldNum) {
-        return "-" + result + '.' + decimal;
+        return "-" + result + "." + decimal;
     } else {
-        return result + '.' + decimal;
+        return result + "." + decimal;
     }
-}
+};
 export default {
     format,
     message,
     query,
     currency
-}
+};
