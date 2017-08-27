@@ -1,16 +1,16 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 var _formatArray = function _formatArray() {
-    var input = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+    var input = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
     var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 
     if (Array.prototype.isPrototypeOf(args) && 0 < args.length) {
         args.forEach(function (item, index) {
-            if (0 <= input.indexOf(':' + index) && item) {
-                var replaced = new RegExp('\\:' + index, 'gm');
+            if (0 <= input.indexOf(":" + index) && undefined != item) {
+                var replaced = new RegExp("\\:" + index, "gm");
                 input = input.replace(replaced, item);
             }
         });
@@ -19,14 +19,14 @@ var _formatArray = function _formatArray() {
 };
 
 var _formatNamed = function _formatNamed() {
-    var input = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+    var input = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
     var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
     if (!Array.prototype.isPrototypeOf(params) && 0 < Object.keys(params).length) {
         for (var key in params) {
             var value = params[key];
-            if (0 <= input.indexOf(':' + key) && value) {
-                var replaced = new RegExp('\\:' + key, 'gm');
+            if (0 <= input.indexOf(":" + key) && undefined != value) {
+                var replaced = new RegExp("\\:" + key, "gm");
                 input = input.replace(replaced, value);
                 delete params[key];
             }
@@ -51,16 +51,16 @@ var query = function query() {
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var idx = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
 
-    var queryStr = '';
+    var queryStr = "";
     for (var key in params) {
         if (params.hasOwnProperty(key)) {
             var value = params[key];
             if (value) {
-                var kv = key + '=' + encodeURIComponent(value);
+                var kv = key + "=" + encodeURIComponent(value);
                 if (0 === idx) {
-                    queryStr += '?' + kv;
+                    queryStr += "?" + kv;
                 } else {
-                    queryStr += '&' + kv;
+                    queryStr += "&" + kv;
                 }
                 idx++;
             }
@@ -74,7 +74,7 @@ var message = function message() {
 
     if (params && Array.prototype.isPrototypeOf(params) && 0 < params.length) {
         params.forEach(function (item, index) {
-            var reg = new RegExp('\\{' + index + '\\}', "gm");
+            var reg = new RegExp("\\{" + index + "\\}", "gm");
             input = input.replace(reg, item);
         });
     }
@@ -84,9 +84,9 @@ var currency = function currency(num) {
     var oldNum = num;
     num = Math.abs(num);
 
-    var result = '',
+    var result = "",
         counter = 0;
-    var decimal = num.toString().split('.')[1];
+    var decimal = num.toString().split(".")[1];
     if (!decimal) {
         decimal = "00";
     } else {
@@ -96,19 +96,19 @@ var currency = function currency(num) {
             decimal = decimal + "0";
         }
     }
-    var int = num.toString().split('.')[0];
+    var int = num.toString().split(".")[0];
     int = (int || 0).toString();
     for (var i = int.length - 1; i >= 0; i--) {
         counter++;
         result = int.charAt(i) + result;
         if (!(counter % 3) && i !== 0) {
-            result = ',' + result;
+            result = "," + result;
         }
     }
     if (0 > oldNum) {
-        return "-" + result + '.' + decimal;
+        return "-" + result + "." + decimal;
     } else {
-        return result + '.' + decimal;
+        return result + "." + decimal;
     }
 };
 exports.default = {
