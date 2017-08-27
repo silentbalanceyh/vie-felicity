@@ -19,6 +19,8 @@ class Flow {
                             const element = replaced[index];
                             if (element) {
                                 value = element[field];
+                            }else{
+                                target[key] = value;
                             }
                         }
                     }
