@@ -1,73 +1,72 @@
-import Date from '../type/Type.Date'
-import Encrypt from '../tool/Tool.Encrypt'
-import Log from '../log/Log'
+import Date from "../type/Type.Date";
+import Encrypt from "../tool/Tool.Encrypt";
+import Log from "../log/Log";
 import App from "../meta/Meta.App";
 
 const SCHEMA = {
-    "OAuth":"Bearer",
-    "Basic":"Basic"
+    OAuth: "Bearer",
+    Basic: "Basic"
 };
 
 const _parameters = (params = {}) => {
-    let param = '';
+    let param = "";
     const keys = Object.keys(params).sort();
     if (0 < keys.length) {
         keys.forEach(key => {
             if ("pager" === key) {
                 /** 1.Pager参数专用签名 **/
                 let pager = params[key];
-                if ("string" === typeof(params[key])) {
-                    pager = JSON.parse(params[key])
+                if ("string" === typeof params[key]) {
+                    pager = JSON.parse(params[key]);
                 }
-                if(pager) {
+                if (pager) {
                     let sign = `:index${pager.index}size${pager.size}`;
-                    param += key + sign + ':'
-                }else{
-                    param += key + ':'
+                    param += key + sign + ":";
+                } else {
+                    param += key + ":";
                 }
             } else {
                 /** 这两个参数不参加签名 **/
-                if ("criterias" !== key) {
+                if ("criterias" !== key && "sig" !== key) {
                     if (params[key]) {
-                        if ("object" === typeof(params[key])) {
-                            param += key + JSON.stringify(params[key]) + ':'
+                        if ("object" === typeof params[key]) {
+                            param += key + JSON.stringify(params[key]) + ":";
                         } else {
-                            param += key + params[key] + ':'
+                            param += key + params[key] + ":";
                         }
                     } else {
                         /** 特殊Boolean值的签名 **/
                         if (false === params[key]) {
-                            param += key + "false:"
+                            param += key + "false:";
                         } else if (undefined !== params[key]) {
-                            param += key + params[key] + ':'
+                            param += key + params[key] + ":";
                         }
                     }
                 }
             }
-        })
+        });
     }
-    return param
+    return param;
 };
 
-class Sign{
-
-    constructor(prefix = '', debug = true){
+class Sign {
+    constructor(prefix = "", debug = true) {
         this.app = new App(prefix);
         this.debug = debug;
         // Private
-        this.secret = (seed) => {
+        this.secret = seed => {
             const user = this.app.user();
             let secret = Date.now("YYYYMMDDHH");
-            if(user && 'object' === typeof user){
-                seed += user['uniqueId'];
-                secret = user['token'];
+            if (user && "object" === typeof user) {
+                seed += user["uniqueId"];
+                secret = user["token"];
             }
             return { seed, secret };
-        }
+        };
     }
 
     /** Uri计算Sig **/
-    signature(uri, method = "GET", params = {}){
+    signature(uri, method = "GET", params = {}) {
         /** 1.构造签名的Method **/
         let seed = method.toUpperCase();
         seed += ":";
@@ -80,25 +79,29 @@ class Sign{
         const secret = secretObj.secret;
         /** 3.签名 **/
         const sig = Encrypt.hmSha512(seed, secret);
-        if(this.debug) {
+        if (this.debug) {
             Log.sign(uri, method, params, {
-                sig, secret, seed
+                sig,
+                secret,
+                seed
             });
         }
         /** 4.注入 **/
-        params['sig'] = sig
-    };
+        params["sig"] = sig;
+    }
 
-    token(){
+    token() {
         const app = this.app.read();
-        let header = '';
-        if(app){
+        let header = "";
+        if (app) {
             const auth = app.auth;
             const prefix = SCHEMA[auth];
             const user = this.app.user();
-            if(user){
-                const value = Encrypt.b64Enc(`${user['uniqueId']}:${user['token']}`);
-                header = prefix + ' ' + value;
+            if (user) {
+                const value = Encrypt.b64Enc(
+                    `${user["uniqueId"]}:${user["token"]}`
+                );
+                header = prefix + " " + value;
             }
         }
         return header;
