@@ -1,57 +1,114 @@
-const _triggered = (rule = {}, values = "") => {
-    // 满足条件的验证规则
-    const { _trigger } = rule;
-    if(_trigger){
-        // 检查触发条件min
-        if(_trigger.min && values.length < _trigger.min){
-            return false;
-        }
-        // 检查触发条件max
-        if(_trigger.max && values.length > _trigger.max){
-            return false;
-        }
-    }
-    // 未配置触发条件则直接验证
-    return true;
-};
+import Cond from "./Ant.Cond";
+
 const diff = (form = {}) => (rule = {}, values, callback) => {
     // 1.提取target字段
-    if (!rule['_target']) {
-        console.warn("[JOY] Please check your configuration for rule: diff. '_target' missing.");
-    }// 2.前置条件判断
-    const ready = _triggered(rule, values);
-    if(ready) {
-        const {_target, message} = rule;
-        const compared = form.getFieldValue(_target);
-        if (compared === values) {
-            callback(message);
-        } else {
-            callback();
-        }
-    }else{
-        callback();
+    if (!rule["$comparedTo"]) {
+        console.warn(
+            "[JOY] Please check your configuration for rule: diff. '$comparedTo' missing."
+        );
     }
+    Cond.execute(form, rule, callback, () => {
+        const compared = form.getFieldValue(rule.$comparedTo);
+        return compared === values ? rule.message : false;
+    });
 };
 const same = (form = {}) => (rule = {}, values, callback) => {
     // 1.提取target字段
-    if (!rule['_target']) {
-        console.warn("[JOY] Please check your configuration for rule: same. '_target' missing.");
+    if (!rule["$comparedTo"]) {
+        console.warn(
+            "[JOY] Please check your configuration for rule: same. '$comparedTo' missing."
+        );
     }
     // 2.前置条件判断
-    const ready = _triggered(rule, values);
-    if(ready) {
-        const {_target, message} = rule;
-        const compared = form.getFieldValue(_target);
-        if (compared !== values) {
-            callback(message);
-        } else {
-            callback();
+    Cond.execute(form, rule, callback, () => {
+        const compared = form.getFieldValue(rule.$comparedTo);
+        return compared !== values ? rule.message : false;
+    });
+};
+const required = (form = {}) => (rule = {}, values, callback) => {
+    Cond.execute(form, rule, callback, () => {
+        return !values ? rule.message : false;
+    });
+};
+
+const _prepare = (form = {}, rule, params = {}) => {
+    // 附加参数
+    if (rule["$params"]) {
+        for (const name in rule.$params) {
+            const target = rule.$params[name];
+            if (target) {
+                const value = form.getFieldValue(target);
+                if (value) {
+                    params[name] = value;
+                }
+            }
         }
-    }else{
+    }
+};
+const duplicated = (form = {}, generator = {}) => (
+    rule = {},
+    values,
+    callback
+) => {
+    if (!rule["$ajax"]) {
+        console.warn(
+            "[JOY] Please check your configuration for rule: duplicated. '$ajax' missing."
+        );
+    }
+    // OOB Endpoint
+    if (values) {
+        const uri = rule.uri ? rule.uri : "/api/vlv/rule/duplicated";
+        const { identifier, name } = rule.$ajax;
+        const params = { identifier, name, value: values };
+        // 附加参数
+        _prepare(form, rule, params);
+        const promise = generator.post(uri, params);
+        promise.then(data => {
+            if (data) {
+                callback();
+            } else {
+                const { message } = rule;
+                callback(message);
+            }
+        });
+    } else {
+        callback();
+    }
+};
+const existing = (form = {}, generator = {}) => (
+    rule = {},
+    values,
+    callback
+) => {
+    if (!rule["$ajax"]) {
+        console.warn(
+            "[JOY] Please check your configuration for rule: existing. '$ajax' missing."
+        );
+    }
+    // OOB Endpoint
+    if (values) {
+        const uri = rule.uri ? rule.uri : "/api/vlv/rule/existing";
+        const { identifier, name } = rule.$ajax;
+        const params = { identifier, name, value: values };
+        // 附加参数
+        _prepare(form, rule, params);
+        const promise = generator.post(uri, params);
+        promise.then(data => {
+            if (data) {
+                callback();
+            } else {
+                const { message } = rule;
+                callback(message);
+            }
+        });
+    } else {
         callback();
     }
 };
 export default {
     diff,
-    same
-}
+    same,
+    required,
+    duplicated,
+    existing
+};

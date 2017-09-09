@@ -3,23 +3,13 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-var _triggered = function _triggered() {
-    var rule = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    var values = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
-    var _trigger = rule._trigger;
 
-    if (_trigger) {
-        if (_trigger.min && values.length < _trigger.min) {
-            return false;
-        }
+var _Ant = require("./Ant.Cond");
 
-        if (_trigger.max && values.length > _trigger.max) {
-            return false;
-        }
-    }
+var _Ant2 = _interopRequireDefault(_Ant);
 
-    return true;
-};
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var diff = function diff() {
     var form = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     return function () {
@@ -27,23 +17,13 @@ var diff = function diff() {
         var values = arguments[1];
         var callback = arguments[2];
 
-        if (!rule['_target']) {
-            console.warn("[JOY] Please check your configuration for rule: diff. '_target' missing.");
+        if (!rule["$comparedTo"]) {
+            console.warn("[JOY] Please check your configuration for rule: diff. '$comparedTo' missing.");
         }
-        var ready = _triggered(rule, values);
-        if (ready) {
-            var _target = rule._target,
-                message = rule.message;
-
-            var compared = form.getFieldValue(_target);
-            if (compared === values) {
-                callback(message);
-            } else {
-                callback();
-            }
-        } else {
-            callback();
-        }
+        _Ant2.default.execute(form, rule, callback, function () {
+            var compared = form.getFieldValue(rule.$comparedTo);
+            return compared === values ? rule.message : false;
+        });
     };
 };
 var same = function same() {
@@ -53,21 +33,113 @@ var same = function same() {
         var values = arguments[1];
         var callback = arguments[2];
 
-        if (!rule['_target']) {
-            console.warn("[JOY] Please check your configuration for rule: same. '_target' missing.");
+        if (!rule["$comparedTo"]) {
+            console.warn("[JOY] Please check your configuration for rule: same. '$comparedTo' missing.");
         }
 
-        var ready = _triggered(rule, values);
-        if (ready) {
-            var _target = rule._target,
-                message = rule.message;
+        _Ant2.default.execute(form, rule, callback, function () {
+            var compared = form.getFieldValue(rule.$comparedTo);
+            return compared !== values ? rule.message : false;
+        });
+    };
+};
+var required = function required() {
+    var form = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    return function () {
+        var rule = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+        var values = arguments[1];
+        var callback = arguments[2];
 
-            var compared = form.getFieldValue(_target);
-            if (compared !== values) {
-                callback(message);
-            } else {
-                callback();
+        _Ant2.default.execute(form, rule, callback, function () {
+            return !values ? rule.message : false;
+        });
+    };
+};
+
+var _prepare = function _prepare() {
+    var form = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var rule = arguments[1];
+    var params = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+    if (rule["$params"]) {
+        for (var name in rule.$params) {
+            var target = rule.$params[name];
+            if (target) {
+                var value = form.getFieldValue(target);
+                if (value) {
+                    params[name] = value;
+                }
             }
+        }
+    }
+};
+var duplicated = function duplicated() {
+    var form = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var generator = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    return function () {
+        var rule = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+        var values = arguments[1];
+        var callback = arguments[2];
+
+        if (!rule["$ajax"]) {
+            console.warn("[JOY] Please check your configuration for rule: duplicated. '$ajax' missing.");
+        }
+
+        if (values) {
+            var uri = rule.uri ? rule.uri : "/api/vlv/rule/duplicated";
+            var _rule$$ajax = rule.$ajax,
+                identifier = _rule$$ajax.identifier,
+                name = _rule$$ajax.name;
+
+            var params = { identifier: identifier, name: name, value: values };
+
+            _prepare(form, rule, params);
+            var promise = generator.post(uri, params);
+            promise.then(function (data) {
+                if (data) {
+                    callback();
+                } else {
+                    var message = rule.message;
+
+                    callback(message);
+                }
+            });
+        } else {
+            callback();
+        }
+    };
+};
+var existing = function existing() {
+    var form = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var generator = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    return function () {
+        var rule = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+        var values = arguments[1];
+        var callback = arguments[2];
+
+        if (!rule["$ajax"]) {
+            console.warn("[JOY] Please check your configuration for rule: existing. '$ajax' missing.");
+        }
+
+        if (values) {
+            var uri = rule.uri ? rule.uri : "/api/vlv/rule/existing";
+            var _rule$$ajax2 = rule.$ajax,
+                identifier = _rule$$ajax2.identifier,
+                name = _rule$$ajax2.name;
+
+            var params = { identifier: identifier, name: name, value: values };
+
+            _prepare(form, rule, params);
+            var promise = generator.post(uri, params);
+            promise.then(function (data) {
+                if (data) {
+                    callback();
+                } else {
+                    var message = rule.message;
+
+                    callback(message);
+                }
+            });
         } else {
             callback();
         }
@@ -75,5 +147,8 @@ var same = function same() {
 };
 exports.default = {
     diff: diff,
-    same: same
+    same: same,
+    required: required,
+    duplicated: duplicated,
+    existing: existing
 };
