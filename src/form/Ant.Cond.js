@@ -13,7 +13,7 @@ const rLength = (value, item) => {
             // TODO:
         }
     } else {
-        return true;
+        return false;
     }
 };
 const rBool = (value, item) => {

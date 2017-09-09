@@ -11,7 +11,7 @@ var rLength = function rLength(value, item) {
             return length > expected;
         } else {}
     } else {
-        return true;
+        return false;
     }
 };
 var rBool = function rBool(value, item) {
