@@ -9,6 +9,7 @@ export { default as Inger } from "./ajax/Ajax.Ingest";
 
 /** 格式化专用方法 */
 export { default as Formule } from "./string/String.Formule";
+export { default as Sateur } from "./string/String.Normalizer";
 
 /** 基础工具类 */
 export { default as Perdu } from "./tool/Tool.Random";
