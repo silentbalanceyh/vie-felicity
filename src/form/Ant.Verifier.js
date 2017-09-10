@@ -40,7 +40,7 @@ const after = (form = {}) => (rule = {}, values, callback) => {
         } else {
             compared = form.getFieldValue(rule.$comparedTo);
         }
-        return !values.isAfter(compared);
+        return moment.isMoment(values) && !values.isAfter(compared);
         // return compared !== values ? rule.message : false;
     });
 };
@@ -59,7 +59,7 @@ const before = (form = {}) => (rule = {}, values, callback) => {
         } else {
             compared = form.getFieldValue(rule.$comparedTo);
         }
-        return !values.isBefore(compared);
+        return moment.isMoment(values) && !values.isBefore(compared);
     });
 };
 const required = (form = {}) => (rule = {}, values, callback) => {

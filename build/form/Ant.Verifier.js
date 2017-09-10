@@ -65,7 +65,7 @@ var after = function after() {
             } else {
                 compared = form.getFieldValue(rule.$comparedTo);
             }
-            return !values.isAfter(compared);
+            return _moment2.default.isMoment(values) && !values.isAfter(compared);
         });
     };
 };
@@ -87,7 +87,7 @@ var before = function before() {
             } else {
                 compared = form.getFieldValue(rule.$comparedTo);
             }
-            return !values.isBefore(compared);
+            return _moment2.default.isMoment(values) && !values.isBefore(compared);
         });
     };
 };
