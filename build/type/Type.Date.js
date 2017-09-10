@@ -30,7 +30,7 @@ var end = function end(start) {
     var adjust = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
     var flag = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "seconds";
 
-    if (start && start.isMoment(start)) {
+    if (start && _moment2.default.isMoment(start)) {
         var $start = (0, _moment2.default)(start);
         if (0 < adjust) {
             return $start.add(adjust, flag);

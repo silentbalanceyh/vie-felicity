@@ -17,7 +17,7 @@ const duration = (from, to, flag = "seconds") => {
 };
 
 const end = (start, adjust = 0, flag = "seconds") => {
-    if (start && start.isMoment(start)) {
+    if (start && moment.isMoment(start)) {
         const $start = moment(start);
         if (0 < adjust) {
             return $start.add(adjust, flag);
