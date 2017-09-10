@@ -13,15 +13,13 @@ const rLength = (value, item) => {
             // TODO:
         }
     } else {
-        return false;
+        return true;
     }
-};
-const rBool = (value, item) => {
-    return Boolean(item) === value;
 };
 const JFun = {
     length: rLength,
-    bool: rBool
+    bool: (value, item) => Boolean(item) === value,
+    value: (value, item) => (item ? !!value : !value)
 };
 const _execRules = (value, rules = {}) => {
     let passed = true;
@@ -83,5 +81,6 @@ const execute = (form, rule = {}, callback, executor) => {
 };
 
 export default {
-    execute
+    execute,
+    preCheck
 };

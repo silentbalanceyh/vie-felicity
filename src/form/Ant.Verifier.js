@@ -1,5 +1,5 @@
 import Cond from "./Ant.Cond";
-
+import moment from "moment";
 const diff = (form = {}) => (rule = {}, values, callback) => {
     // 1.提取target字段
     if (!rule["$comparedTo"]) {
@@ -23,6 +23,43 @@ const same = (form = {}) => (rule = {}, values, callback) => {
     Cond.execute(form, rule, callback, () => {
         const compared = form.getFieldValue(rule.$comparedTo);
         return compared !== values ? rule.message : false;
+    });
+};
+const after = (form = {}) => (rule = {}, values, callback) => {
+    // 1.提取target字段
+    if (!rule["$comparedTo"]) {
+        console.warn(
+            "[JOY] Please check your configuration for rule: same. '$comparedTo' missing."
+        );
+    }
+    // 2.前置条件判断
+    Cond.execute(form, rule, callback, () => {
+        let compared;
+        if ("$NOW$" === rule.$comparedTo) {
+            compared = moment();
+        } else {
+            compared = form.getFieldValue(rule.$comparedTo);
+        }
+        return !values.isAfter(compared);
+        // return compared !== values ? rule.message : false;
+    });
+};
+const before = (form = {}) => (rule = {}, values, callback) => {
+    // 1.提取target字段
+    if (!rule["$comparedTo"]) {
+        console.warn(
+            "[JOY] Please check your configuration for rule: same. '$comparedTo' missing."
+        );
+    }
+    // 2.前置条件判断
+    Cond.execute(form, rule, callback, () => {
+        let compared;
+        if ("$NOW$" === rule.$comparedTo) {
+            compared = moment();
+        } else {
+            compared = form.getFieldValue(rule.$comparedTo);
+        }
+        return !values.isBefore(compared);
     });
 };
 const required = (form = {}) => (rule = {}, values, callback) => {
@@ -56,21 +93,26 @@ const duplicated = (form = {}, generator = {}) => (
         );
     }
     // OOB Endpoint
-    if (values) {
-        const uri = rule.uri ? rule.uri : "/api/vlv/rule/duplicated";
-        const { identifier, name } = rule.$ajax;
-        const params = { identifier, name, value: values };
-        // 附加参数
-        _prepare(form, rule, params);
-        const promise = generator.post(uri, params);
-        promise.then(data => {
-            if (data) {
-                callback();
-            } else {
-                const { message } = rule;
-                callback(message);
-            }
-        });
+    const ready = Cond.preCheck(form, rule.$trigger);
+    if (ready) {
+        if (values) {
+            const uri = rule.uri ? rule.uri : "/api/vlv/rule/duplicated";
+            const { identifier, name } = rule.$ajax;
+            const params = { identifier, name, value: values };
+            // 附加参数
+            _prepare(form, rule, params);
+            const promise = generator.post(uri, params);
+            promise.then(data => {
+                if (data) {
+                    callback();
+                } else {
+                    const { message } = rule;
+                    callback(message);
+                }
+            });
+        } else {
+            callback();
+        }
     } else {
         callback();
     }
@@ -86,21 +128,26 @@ const existing = (form = {}, generator = {}) => (
         );
     }
     // OOB Endpoint
-    if (values) {
-        const uri = rule.uri ? rule.uri : "/api/vlv/rule/existing";
-        const { identifier, name } = rule.$ajax;
-        const params = { identifier, name, value: values };
-        // 附加参数
-        _prepare(form, rule, params);
-        const promise = generator.post(uri, params);
-        promise.then(data => {
-            if (data) {
-                callback();
-            } else {
-                const { message } = rule;
-                callback(message);
-            }
-        });
+    const ready = Cond.preCheck(form, rule.$trigger);
+    if (ready) {
+        if (values) {
+            const uri = rule.uri ? rule.uri : "/api/vlv/rule/existing";
+            const { identifier, name } = rule.$ajax;
+            const params = { identifier, name, value: values };
+            // 附加参数
+            _prepare(form, rule, params);
+            const promise = generator.post(uri, params);
+            promise.then(data => {
+                if (data) {
+                    callback();
+                } else {
+                    const { message } = rule;
+                    callback(message);
+                }
+            });
+        } else {
+            callback();
+        }
     } else {
         callback();
     }
@@ -110,5 +157,7 @@ export default {
     same,
     required,
     duplicated,
-    existing
+    existing,
+    after,
+    before
 };

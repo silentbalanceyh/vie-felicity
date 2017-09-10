@@ -11,15 +11,17 @@ var rLength = function rLength(value, item) {
             return length > expected;
         } else {}
     } else {
-        return false;
+        return true;
     }
-};
-var rBool = function rBool(value, item) {
-    return Boolean(item) === value;
 };
 var JFun = {
     length: rLength,
-    bool: rBool
+    bool: function bool(value, item) {
+        return Boolean(item) === value;
+    },
+    value: function value(_value, item) {
+        return item ? !!_value : !_value;
+    }
 };
 var _execRules = function _execRules(value) {
     var rules = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -47,11 +49,11 @@ var preCheck = function preCheck(form, trigger, value) {
         var passed = true;
 
         for (var field in trigger) {
-            var _value = values[field];
+            var _value2 = values[field];
 
             var rules = trigger[field];
 
-            passed = _execRules(_value, rules);
+            passed = _execRules(_value2, rules);
             if (!passed) {
                 break;
             }
@@ -81,5 +83,6 @@ var execute = function execute(form) {
 };
 
 exports.default = {
-    execute: execute
+    execute: execute,
+    preCheck: preCheck
 };

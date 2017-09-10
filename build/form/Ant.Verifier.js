@@ -8,6 +8,10 @@ var _Ant = require("./Ant.Cond");
 
 var _Ant2 = _interopRequireDefault(_Ant);
 
+var _moment = require("moment");
+
+var _moment2 = _interopRequireDefault(_moment);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var diff = function diff() {
@@ -40,6 +44,50 @@ var same = function same() {
         _Ant2.default.execute(form, rule, callback, function () {
             var compared = form.getFieldValue(rule.$comparedTo);
             return compared !== values ? rule.message : false;
+        });
+    };
+};
+var after = function after() {
+    var form = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    return function () {
+        var rule = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+        var values = arguments[1];
+        var callback = arguments[2];
+
+        if (!rule["$comparedTo"]) {
+            console.warn("[JOY] Please check your configuration for rule: same. '$comparedTo' missing.");
+        }
+
+        _Ant2.default.execute(form, rule, callback, function () {
+            var compared = void 0;
+            if ("$NOW$" === rule.$comparedTo) {
+                compared = (0, _moment2.default)();
+            } else {
+                compared = form.getFieldValue(rule.$comparedTo);
+            }
+            return !values.isAfter(compared);
+        });
+    };
+};
+var before = function before() {
+    var form = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    return function () {
+        var rule = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+        var values = arguments[1];
+        var callback = arguments[2];
+
+        if (!rule["$comparedTo"]) {
+            console.warn("[JOY] Please check your configuration for rule: same. '$comparedTo' missing.");
+        }
+
+        _Ant2.default.execute(form, rule, callback, function () {
+            var compared = void 0;
+            if ("$NOW$" === rule.$comparedTo) {
+                compared = (0, _moment2.default)();
+            } else {
+                compared = form.getFieldValue(rule.$comparedTo);
+            }
+            return !values.isBefore(compared);
         });
     };
 };
@@ -85,25 +133,30 @@ var duplicated = function duplicated() {
             console.warn("[JOY] Please check your configuration for rule: duplicated. '$ajax' missing.");
         }
 
-        if (values) {
-            var uri = rule.uri ? rule.uri : "/api/vlv/rule/duplicated";
-            var _rule$$ajax = rule.$ajax,
-                identifier = _rule$$ajax.identifier,
-                name = _rule$$ajax.name;
+        var ready = _Ant2.default.preCheck(form, rule.$trigger);
+        if (ready) {
+            if (values) {
+                var uri = rule.uri ? rule.uri : "/api/vlv/rule/duplicated";
+                var _rule$$ajax = rule.$ajax,
+                    identifier = _rule$$ajax.identifier,
+                    name = _rule$$ajax.name;
 
-            var params = { identifier: identifier, name: name, value: values };
+                var params = { identifier: identifier, name: name, value: values };
 
-            _prepare(form, rule, params);
-            var promise = generator.post(uri, params);
-            promise.then(function (data) {
-                if (data) {
-                    callback();
-                } else {
-                    var message = rule.message;
+                _prepare(form, rule, params);
+                var promise = generator.post(uri, params);
+                promise.then(function (data) {
+                    if (data) {
+                        callback();
+                    } else {
+                        var message = rule.message;
 
-                    callback(message);
-                }
-            });
+                        callback(message);
+                    }
+                });
+            } else {
+                callback();
+            }
         } else {
             callback();
         }
@@ -121,25 +174,30 @@ var existing = function existing() {
             console.warn("[JOY] Please check your configuration for rule: existing. '$ajax' missing.");
         }
 
-        if (values) {
-            var uri = rule.uri ? rule.uri : "/api/vlv/rule/existing";
-            var _rule$$ajax2 = rule.$ajax,
-                identifier = _rule$$ajax2.identifier,
-                name = _rule$$ajax2.name;
+        var ready = _Ant2.default.preCheck(form, rule.$trigger);
+        if (ready) {
+            if (values) {
+                var uri = rule.uri ? rule.uri : "/api/vlv/rule/existing";
+                var _rule$$ajax2 = rule.$ajax,
+                    identifier = _rule$$ajax2.identifier,
+                    name = _rule$$ajax2.name;
 
-            var params = { identifier: identifier, name: name, value: values };
+                var params = { identifier: identifier, name: name, value: values };
 
-            _prepare(form, rule, params);
-            var promise = generator.post(uri, params);
-            promise.then(function (data) {
-                if (data) {
-                    callback();
-                } else {
-                    var message = rule.message;
+                _prepare(form, rule, params);
+                var promise = generator.post(uri, params);
+                promise.then(function (data) {
+                    if (data) {
+                        callback();
+                    } else {
+                        var message = rule.message;
 
-                    callback(message);
-                }
-            });
+                        callback(message);
+                    }
+                });
+            } else {
+                callback();
+            }
         } else {
             callback();
         }
@@ -150,5 +208,7 @@ exports.default = {
     same: same,
     required: required,
     duplicated: duplicated,
-    existing: existing
+    existing: existing,
+    after: after,
+    before: before
 };
