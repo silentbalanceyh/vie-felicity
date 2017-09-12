@@ -58,6 +58,15 @@ Object.defineProperty(exports, "Formule", {
   }
 });
 
+var _String2 = require("./string/String.Normalizer");
+
+Object.defineProperty(exports, "Sateur", {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_String2).default;
+  }
+});
+
 var _Tool = require("./tool/Tool.Random");
 
 Object.defineProperty(exports, "Perdu", {
