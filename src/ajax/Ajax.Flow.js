@@ -20,7 +20,7 @@ class Flow {
                             if (element) {
                                 value = element[field];
                             }else{
-                                target[key] = value;
+                                target[key] = expr;
                             }
                         }
                     }
@@ -28,7 +28,7 @@ class Flow {
                         target[key] = value;
                     }
                 } else {
-                    target[key] = value;
+                    target[key] = expr;
                 }
             }
             return target;
