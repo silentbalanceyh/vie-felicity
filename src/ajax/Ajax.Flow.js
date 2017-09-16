@@ -19,6 +19,8 @@ class Flow {
                             const element = replaced[index];
                             if (element) {
                                 value = element[field];
+                            }else{
+                                target[key] = expr;
                             }
                         }
                     }
@@ -26,7 +28,7 @@ class Flow {
                         target[key] = value;
                     }
                 } else {
-                    target[key] = value;
+                    target[key] = expr;
                 }
             }
             return target;
