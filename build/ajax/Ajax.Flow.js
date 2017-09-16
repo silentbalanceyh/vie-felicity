@@ -36,6 +36,8 @@ var Flow = function () {
                             var element = replaced[index];
                             if (element) {
                                 value = element[field];
+                            } else {
+                                target[key] = expr;
                             }
                         }
                     }
@@ -43,7 +45,7 @@ var Flow = function () {
                         target[key] = value;
                     }
                 } else {
-                    target[key] = value;
+                    target[key] = expr;
                 }
             }
             return target;
