@@ -1,6 +1,5 @@
-import Q from 'q'
+import Q from "q";
 class Flow {
-
     constructor(promise) {
         this.promise = promise;
         this.replace = (params = {}, replaced = []) => {
@@ -8,10 +7,8 @@ class Flow {
             for (const key in params) {
                 const expr = params[key];
                 let value = null;
-                if (expr && 0 < expr.indexOf('.')) {
-                    const meta = expr
-                        .toString()
-                        .split('.');
+                if (expr && 0 < expr.indexOf(".")) {
+                    const meta = expr.toString().split(".");
                     if (Array.prototype.isPrototypeOf(meta)) {
                         const index = meta[0];
                         const field = meta[1];
@@ -19,13 +16,13 @@ class Flow {
                             const element = replaced[index];
                             if (element) {
                                 value = element[field];
-                            }else{
+                                if (undefined !== value) {
+                                    target[key] = value;
+                                }
+                            } else {
                                 target[key] = expr;
                             }
                         }
-                    }
-                    if (undefined !== value) {
-                        target[key] = value;
                     }
                 } else {
                     target[key] = expr;
@@ -43,14 +40,9 @@ class Flow {
             const config = next[0];
             const nextPromise = promise.then(data => {
                 reference.push(data);
-                const {
-                    uri,
-                    params = {}
-                } = config;
+                const { uri, params = {} } = config;
                 const target = this.replace(params, reference);
-                return this
-                    .promise
-                    .flowGet(uri, target, reference);
+                return this.promise.flowGet(uri, target, reference);
             });
             // 链式操作递归
             if (1 === next.length) {
@@ -60,7 +52,7 @@ class Flow {
                 return this.catena(nextPromise, left, reference);
             }
         }
-    };
+    }
 
     parallel(promise, multi = [], reference = []) {
         if (0 === multi.length) {
@@ -75,11 +67,7 @@ class Flow {
                 const parallelPromise = (multi = [], replaced = []) => {
                     const result = [];
                     multi.forEach(config => {
-                        const {
-                            uri,
-                            params = {},
-                            secure = true
-                        } = config;
+                        const { uri, params = {}, secure = true } = config;
                         const target = fnReplace(params, replaced);
                         const promise = promiseReference.get(uri, target);
                         result.push(promise);
@@ -95,7 +83,7 @@ class Flow {
                         if (item.key) {
                             const response = parallelData[index];
                             if (response) {
-                                parallel[item.key] = response.list
+                                parallel[item.key] = response.list;
                             }
                         }
                     });
